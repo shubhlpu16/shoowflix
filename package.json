@@ -23,9 +23,12 @@
     "@chakra-ui/react": "^2.8.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "axios": "^1.5.1",
     "eslint": "^8.50.0",
     "framer-motion": "^10.16.4",
     "next": "latest",
+    "next-pwa": "^5.6.0",
+    "query-string": "^8.1.0",
     "react": "latest",
     "react-dom": "latest"
   },
@@ -33,14 +36,14 @@
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "camelcase-keys": "^8.0.2",
     "eslint-config-next": "latest",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
     "prettier": "^3.0.3",
-    "typescript": "latest",
-    "camelcase-keys": "^8.0.2",
-    "swr": "^2.1.5"
+    "swr": "^2.1.5",
+    "typescript": "latest"
   }
 }

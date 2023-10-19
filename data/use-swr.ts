@@ -16,9 +16,7 @@ interface useSwrProps {
 
 export const useSwr = ({ key, swrOptions }: useSwrProps) => {
   const config = {
-    headers: {
-      'X-Api-Key': process.env.NEXT_PUBLIC_API_KEY
-    }
+    headers: {}
   }
   const url = `${process.env.NEXT_PUBLIC_API_ROOT}${key}`
   const swrKeyValue = [url, config]

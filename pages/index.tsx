@@ -1,4 +1,3 @@
-// import { useTrendingMovies } from '@/data/use-trending-movies'
 import { useMovies } from '@/data/use-movies'
 import { Stack } from '@chakra-ui/react'
 

@@ -24,3 +24,13 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+.mask {
+  -webkit-mask-image: linear-gradient(to bottom, #141414 50%, transparent);
+  mask-image: linear-gradient(to bottom, #141414 50%, transparent);
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}

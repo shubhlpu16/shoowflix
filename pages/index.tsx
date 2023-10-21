@@ -1,13 +1,24 @@
 import { useMovies } from '@/data/use-movies'
-import { Stack } from '@chakra-ui/react'
+import { Box, Stack } from '@chakra-ui/react'
+import { Caraousel } from '@/components/caraousel'
+import { useMemo } from 'react'
+import { Navbar } from '@/components/navbar'
 
 export default function Home() {
-  const data = useMovies({ sort_by: 'date', order_by: 'desc' })
+  const { moviesData } = useMovies({
+    limit: '4'
+  })
+
   // eslint-disable-next-line no-console
-  console.log(data)
+  const movies = useMemo(() => {
+    return moviesData?.data?.movies?.map((movie: any) => movie) || []
+  }, [moviesData])
   return (
-    <>
-      <Stack>hi</Stack>
-    </>
+    <Box>
+      <Navbar />
+      <Stack spacing={8} as="section" background="gray.600">
+        <Caraousel movies={movies} />
+      </Stack>
+    </Box>
   )
 }

@@ -1,7 +1,9 @@
-import { theme as ChakraTheme, extendTheme, type Theme } from '@chakra-ui/react';
+import { theme as ChakraTheme, extendTheme, type Theme } from '@chakra-ui/react'
+import { colors } from './colors'
 
 export const theme: Partial<Theme> = extendTheme({
   ...ChakraTheme,
+  colors,
   breakpoints: {
     sm: '375px',
     md: '640px',
@@ -12,9 +14,9 @@ export const theme: Partial<Theme> = extendTheme({
   styles: {
     global: {
       body: {
-        bg: 'gray.100',
-        color: 'brown.400'
+        bg: 'gray.600',
+        color: 'gray.0'
       }
     }
   }
-});
+})

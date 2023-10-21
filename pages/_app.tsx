@@ -17,6 +17,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ChakraProvider theme={theme}>
         <Component {...pageProps} />
       </ChakraProvider>
+      <script
+        src="https://cdn.jsdelivr.net/npm/@webtor/player-sdk-js/dist/index.min.js"
+        async
+      ></script>
     </>
   )
 }

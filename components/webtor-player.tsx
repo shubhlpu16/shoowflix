@@ -14,6 +14,7 @@ export const WebtorPlayer = ({
   imdbId,
   poster
 }: WebTorPlayerProps) => {
+  console.log('🚀 ~ file: webtor-player.tsx:17 ~ magnetURI:', magnetURI)
   useEffect(() => {
     window.webtor.push({
       id: 'player',

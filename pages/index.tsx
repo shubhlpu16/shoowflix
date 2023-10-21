@@ -14,11 +14,13 @@ export default function Home() {
     return moviesData?.data?.movies?.map((movie: any) => movie) || []
   }, [moviesData])
   return (
-    <Box>
-      <Navbar />
-      <Stack spacing={8} as="section" background="gray.600">
-        <Caraousel movies={movies} />
-      </Stack>
-    </Box>
+    <>
+      <Box>
+        <Navbar />
+        <Stack spacing={8} as="section" background="gray.600">
+          <Caraousel movies={movies} />
+        </Stack>
+      </Box>
+    </>
   )
 }

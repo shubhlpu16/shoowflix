@@ -12,11 +12,14 @@ export const fetcher = ([...args]) =>
 interface useSwrProps {
   key: string
   swrOptions?: SWRConfiguration
+  isAuth?: boolean
 }
 
 export const useSwr = ({ key, swrOptions }: useSwrProps) => {
   const config = {
-    headers: {}
+    headers: {
+      // Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`
+    }
   }
   const url = `${process.env.NEXT_PUBLIC_API_ROOT}${key}`
   const swrKeyValue = [url, config]

@@ -5,11 +5,12 @@ import {
   Button,
   VStack,
   Heading,
-  Flex
+  Flex,
+  Badge
 } from '@chakra-ui/react'
 import { useEffect, useRef, useState } from 'react'
 import { BsFillPlayFill } from 'react-icons/bs'
-import { AiOutlineInfoCircle } from 'react-icons/ai'
+import Link from 'next/link'
 
 interface CarauselProps {
   movies: any[]
@@ -91,7 +92,11 @@ export const Caraousel = ({
                   width={{ xl: '35%', base: '100%' }}
                   spacing="12px"
                   marginLeft={{ lg: '40px', base: '16px' }}
-                  zIndex={10}
+                  // zIndex={10}
+                  // padding="12px"
+                  // borderRadius="12px"
+                  // backdropFilter="blur(10px)" /* Adjust the blur amount as needed */
+                  // backgroundColor=" rgba(255, 255, 255, 0.5)" /* Adjust the color and opacity */
                 >
                   <Heading
                     textShadow="2px 2px 4px rgba(0,0,0,.45)"
@@ -100,6 +105,26 @@ export const Caraousel = ({
                   >
                     {movie.title}
                   </Heading>
+                  <Text>{movie.year}</Text>
+                  <Text fontSize="18px">
+                    Genres: {movie.genres.join(' / ')}
+                  </Text>
+                  <Text fontSize="18px">{movie.runtime} min</Text>
+                  <Flex fontSize="18px" gap="8px">
+                    <Text>Available in</Text>
+                    {movie.torrents.map((torrent: any) => (
+                      <Badge
+                        textShadow="none"
+                        color="black"
+                        alignItems="center"
+                        display="flex"
+                        key={torrent.hash}
+                      >
+                        {torrent.quality}
+                      </Badge>
+                    ))}
+                  </Flex>
+                  <Text fontSize="18px">Imdb Rating {movie.rating}</Text>
                   <Text
                     textShadow="2px 2px 4px rgba(0,0,0,.45)"
                     color="white"
@@ -110,7 +135,7 @@ export const Caraousel = ({
                   >
                     {movie.synopsis}
                   </Text>
-                  <Flex gap="12px">
+                  <Link passHref href={`/${movie.slug}`}>
                     <Button
                       background="gray.0"
                       color="black"
@@ -119,21 +144,7 @@ export const Caraousel = ({
                     >
                       Play
                     </Button>
-                    <Button
-                      background="rgba(109, 109, 109, 0.7)"
-                      color="gray.0"
-                      leftIcon={
-                        <AiOutlineInfoCircle
-                          className="icon"
-                          fill="white"
-                          stroke="white"
-                        />
-                      }
-                      padding="11px 28px"
-                    >
-                      More Info
-                    </Button>
-                  </Flex>
+                  </Link>
                 </VStack>
               </Flex>
             </Box>

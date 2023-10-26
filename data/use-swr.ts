@@ -10,19 +10,20 @@ export const fetcher = ([...args]) =>
     .then((json) => camelcaseKeys(json, { deep: true }))
 
 interface useSwrProps {
+  execute?: boolean
   key: string
   swrOptions?: SWRConfiguration
   isAuth?: boolean
 }
 
-export const useSwr = ({ key, swrOptions }: useSwrProps) => {
+export const useSwr = ({ key, swrOptions, execute = true }: useSwrProps) => {
   const config = {
     headers: {
       // Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`
     }
   }
   const url = `${process.env.NEXT_PUBLIC_API_ROOT}${key}`
-  const swrKeyValue = [url, config]
+  const swrKeyValue = execute ? [url, config] : null
 
   const { data, error, isLoading, isValidating, mutate } = useSWRImmutable(
     swrKeyValue,

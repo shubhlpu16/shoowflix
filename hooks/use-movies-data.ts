@@ -2,10 +2,12 @@ import { useMemo } from 'react'
 
 export const useMoviesData = (moviesData: any) => {
   const movies = useMemo(() => {
-    if (!moviesData?.length) {
+    const moviesArray = moviesData?.data?.movies
+    if (!moviesArray?.length) {
       return []
     }
-    return moviesData.filter((movie: any) => movie.name)
+    return moviesArray
   }, [moviesData])
-  return movies
+
+  return { count: moviesData?.data?.movieCount, movies }
 }

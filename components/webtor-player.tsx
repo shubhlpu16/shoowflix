@@ -3,23 +3,24 @@
 
 import React, { useEffect } from 'react'
 
+import { getMagnetURI } from '@/utils/get-magnet-uri'
+
 export interface WebTorPlayerProps {
-  magnetURI: string
+  hash: string
   imdbId: string
   poster: string
 }
 
-export const WebtorPlayer = ({
-  magnetURI,
-  imdbId,
-  poster
-}: WebTorPlayerProps) => {
-  console.log('🚀 ~ file: webtor-player.tsx:17 ~ magnetURI:', magnetURI)
+export const WebtorPlayer = ({ hash, imdbId, poster }: WebTorPlayerProps) => {
   useEffect(() => {
     window.webtor.push({
       id: 'player',
-      magnet: magnetURI,
+      magnet: getMagnetURI(hash),
+      width: '100%',
       on: function (e) {
+        if (e.name == window.webtor.INITED) {
+          e.player.play()
+        }
         if (e.name == window.webtor.TORRENT_FETCHED) {
           console.log('Torrent fetched!', e.data)
         }
@@ -57,7 +58,7 @@ export const WebtorPlayer = ({
         }
       }
     })
-  }, [imdbId, magnetURI, poster])
+  }, [imdbId, hash, poster])
 
-  return <div id="player" className="webtor"></div>
+  return <div id="player"></div>
 }

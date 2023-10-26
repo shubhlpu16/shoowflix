@@ -29,6 +29,11 @@ a {
   mask-image: linear-gradient(to bottom, #141414 50%, transparent);
 }
 
+.mask-1 {
+  -webkit-mask-image: linear-gradient(to bottom, #141414 30%, transparent);
+  mask-image: linear-gradient(to bottom, #141414 30%, transparent);
+}
+
 .icon {
   width: 24px;
   height: 24px;

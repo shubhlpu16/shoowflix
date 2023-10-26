@@ -135,7 +135,7 @@ export const Caraousel = ({
                   >
                     {movie.synopsis}
                   </Text>
-                  <Link passHref href={`/${movie.slug}`}>
+                  <Link passHref href={`movies/${movie.slug}`}>
                     <Button
                       background="gray.0"
                       color="black"

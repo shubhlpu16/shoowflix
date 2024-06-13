@@ -1,102 +1,55 @@
-import {
-  Box,
-  BoxProps,
-  Text,
-  Button,
-  VStack,
-  Heading,
-  Flex,
-  Badge
-} from '@chakra-ui/react'
-import { useEffect, useRef, useState } from 'react'
-import { BsFillPlayFill } from 'react-icons/bs'
+import React, { useRef } from 'react'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/css'
 import Link from 'next/link'
+import { Autoplay } from 'swiper/modules'
+import { Badge, Button, Flex, Heading, Text, VStack } from '@chakra-ui/react'
+import { BsFillPlayFill } from 'react-icons/bs'
 
 interface CarauselProps {
   movies: any[]
-  sliderProps?: BoxProps
-  slideProps?: BoxProps
 }
 
-export const Caraousel = ({
-  movies,
-  sliderProps,
-  slideProps
-}: CarauselProps) => {
-  const [currSlide, setCurrSlide] = useState(0)
-  const sliderRef = useRef<HTMLDivElement>(null)
-  const intervalRef = useRef<any>(null)
-
-  useEffect(() => {
-    sliderRef?.current?.childNodes?.forEach((slide: any, index) => {
-      slide.style.transform = `translateX(${100 * (index - currSlide)}%)`
-    })
-  }, [currSlide])
-
-  const autoSlider = () => {
-    intervalRef.current = setInterval(() => {
-      handleNext()
-    }, 3000)
+export function Caraousel({ movies }: CarauselProps) {
+  const progressCircle = useRef(null)
+  const progressContent = useRef(null)
+  const onAutoplayTimeLeft = (s: any, time: number, progress: number) => {
+    //@ts-ignore
+    progressCircle.current.style.setProperty('--progress', 1 - progress)
+    //@ts-ignore
+    progressContent.current.textContent = `${Math.ceil(time / 1000)}s`
   }
-
-  useEffect(() => {
-    autoSlider()
-
-    return () => {
-      clearInterval(intervalRef.current)
-    }
-  }, [movies])
-
-  const handleNext = () => {
-    setCurrSlide((prevSlide) =>
-      prevSlide === movies.length - 1 ? 0 : prevSlide + 1
-    )
-  }
-
   return (
     <>
-      <Box
-        w="100%"
-        height="80vh"
-        ref={sliderRef}
-        overflow="hidden"
-        onMouseEnter={() => clearInterval(intervalRef.current)}
-        onMouseLeave={autoSlider}
-        {...sliderProps}
+      <Swiper
+        spaceBetween={30}
+        centeredSlides={true}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: true
+        }}
+        modules={[Autoplay]}
+        onAutoplayTimeLeft={onAutoplayTimeLeft}
+        className="mySwiper"
       >
         {movies?.map((movie, index) => {
           return (
-            <Box
-              width="100%"
-              height="80vh"
-              position="absolute"
-              top={0}
-              transition="all 0.3s ease-in"
-              key={`image-slide-show-${movie.id}`}
-              {...slideProps}
-            >
+            <SwiperSlide className="mask">
               <Flex
-                className="mask"
-                backgroundImage={movie.largeCoverImage}
+                backgroundImage={movie.backgroundImage}
                 backgroundSize="cover"
                 w="100%"
                 h="100%"
                 alignItems="center"
-                opacity={index === currSlide ? 1 : 0}
-                transition="all 0.3s ease-in"
                 backgroundPosition="center"
               >
                 <VStack
                   key={movie.id}
                   alignItems="left"
-                  width={{ xl: '35%', base: '100%' }}
-                  spacing="12px"
+                  textAlign="left"
+                  width={{ xl: '45%', base: '80%' }}
+                  gap="16px"
                   marginLeft={{ lg: '40px', base: '16px' }}
-                  // zIndex={10}
-                  // padding="12px"
-                  // borderRadius="12px"
-                  // backdropFilter="blur(10px)" /* Adjust the blur amount as needed */
-                  // backgroundColor=" rgba(255, 255, 255, 0.5)" /* Adjust the color and opacity */
                 >
                   <Heading
                     textShadow="2px 2px 4px rgba(0,0,0,.45)"
@@ -135,7 +88,7 @@ export const Caraousel = ({
                   >
                     {movie.synopsis}
                   </Text>
-                  <Link passHref href={`movies/${movie.slug}`}>
+                  <Link passHref href={`movies/${movie.titleLong}`}>
                     <Button
                       background="gray.0"
                       color="black"
@@ -147,10 +100,16 @@ export const Caraousel = ({
                   </Link>
                 </VStack>
               </Flex>
-            </Box>
+            </SwiperSlide>
           )
         })}
-      </Box>
+        <div className="autoplay-progress" slot="container-end">
+          <svg viewBox="0 0 48 48" ref={progressCircle}>
+            <circle cx="24" cy="24" r="20"></circle>
+          </svg>
+          <span ref={progressContent}></span>
+        </div>
+      </Swiper>
     </>
   )
 }

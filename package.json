@@ -38,6 +38,7 @@
     "react-rating-stars-component": "^2.2.0",
     "react-simple-star-rating": "^5.1.7",
     "react-star-ratings": "^2.3.0",
+    "swiper": "^11.1.4",
     "video-react": "^0.16.0",
     "video.js": "^8.6.0"
   },

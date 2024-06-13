@@ -34,7 +34,7 @@ export default function Movie() {
   const [torrentHash, setTorrentHash] = useState('')
 
   const { moviesData, isLoading } = useMovies(
-    { query_term: slug?.toString().split('-').join(' ') || '' },
+    { query_term: slug as string },
     isReady
   )
 
@@ -42,11 +42,11 @@ export default function Movie() {
 
   const { movies, count } = useMoviesData(moviesData)
 
-  useEffect(() => {
-    if (!isLoading && (count === 0 || count > 1)) {
-      router.push('/404')
-    }
-  }, [count, isLoading, router])
+  // useEffect(() => {
+  //   if (!isLoading && (count === 0 || count > 1)) {
+  //     router.push('/404')
+  //   }
+  // }, [count, isLoading, router])
 
   return (
     <Box
@@ -58,7 +58,7 @@ export default function Movie() {
       pos="absolute"
       top={0}
     >
-      <Box backdropFilter="brightness(0.2)" h="100%">
+      <Box backdropFilter="brightness(0.2)" h="100%" overflow="auto">
         <Stack
           w={{ base: '100%', lg: '85%' }}
           h="100%"
@@ -80,6 +80,7 @@ export default function Movie() {
                   <Image
                     src={movies[0]?.largeCoverImage}
                     h={{ lg: '500px', base: '350px' }}
+                    w="333px"
                     border="6px solid white"
                     borderRadius="8px"
                     alt={slug as string}
@@ -132,6 +133,20 @@ export default function Movie() {
                   )}
                 </GridItem>
               </Grid>
+              <Stack gap="24px" mt={{ base: '24px', xl: '40px' }}>
+                <Heading fontSize="24px" borderBottom="2px solid red" pb="4px">
+                  Trailers & More
+                </Heading>
+                <iframe
+                  width="600"
+                  height="400"
+                  src={`https://www.youtube.com/embed/${movies[0]?.ytTrailerCode}`}
+                  title={`${movies[0].title} - Trailer`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                ></iframe>
+              </Stack>
             </Fade>
           )}
         </Stack>

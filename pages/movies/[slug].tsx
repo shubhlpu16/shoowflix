@@ -139,51 +139,63 @@ export default function Movie() {
               </GridItem>
             </Grid>
             <Stack gap="24px" mt={{ base: '24px', xl: '40px' }}>
-              <Heading fontSize="24px" borderBottom="2px solid red" pb="4px">
-                Casts
-              </Heading>
-              <Stack direction="row" spacing="32px" mb="24px">
-                {movie?.cast.map(
-                  (c: {
-                    name: string
-                    urlSmallImage: string | undefined
-                    characterName: string
-                  }) => {
-                    return (
-                      <VStack spacing="2px" key={c.characterName}>
-                        <Avatar size="xl" src={c.urlSmallImage} />
-                        <Text>{c.characterName}</Text>
-                        <Text color="#9e9e9e" fontSize="14px">
-                          {c.name}
-                        </Text>
-                      </VStack>
-                    )
-                  }
-                )}
-              </Stack>
-              <Heading fontSize="24px" borderBottom="2px solid red" pb="4px">
-                Trailers & More
-              </Heading>
-              {movie?.ytTrailerCode ? (
-                <iframe
-                  width="600"
-                  height="400"
-                  src={`https://www.youtube.com/embed/${movie.ytTrailerCode}`}
-                  title={`${movie.title} - Trailer`}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                ></iframe>
-              ) : (
-                <Text color="white">No Trailers</Text>
+              {movie?.cast?.length > 0 && (
+                <>
+                  <Heading
+                    fontSize="24px"
+                    borderBottom="2px solid red"
+                    pb="4px"
+                  >
+                    Casts
+                  </Heading>
+                  <Stack direction="row" spacing="32px" mb="24px">
+                    {movie?.cast?.map(
+                      (c: {
+                        name: string
+                        urlSmallImage: string | undefined
+                        characterName: string
+                      }) => {
+                        return (
+                          <VStack spacing="2px" key={c.characterName}>
+                            <Avatar size="xl" src={c.urlSmallImage} />
+                            <Text>{c.characterName}</Text>
+                            <Text color="#9e9e9e" fontSize="14px">
+                              {c.name}
+                            </Text>
+                          </VStack>
+                        )
+                      }
+                    )}
+                  </Stack>
+                </>
+              )}
+              {movie?.ytTrailerCode && (
+                <>
+                  <Heading
+                    fontSize="24px"
+                    borderBottom="2px solid red"
+                    pb="4px"
+                  >
+                    Trailers & More
+                  </Heading>
+                  <iframe
+                    width="600"
+                    height="400"
+                    src={`https://www.youtube.com/embed/${movie.ytTrailerCode}`}
+                    title={`${movie.title} - Trailer`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  ></iframe>
+                </>
               )}
               <Heading fontSize="24px" borderBottom="2px solid red" pb="4px">
-                Movies Like this
+                Movies like this
               </Heading>
               <Stack direction="row">
                 {suggested.movies.map(
                   (movie: {
-                    largeCoverImage: string | undefined
+                    mediumCoverImage: string | undefined
                     title: string
                     slug: string
                     year: string
@@ -192,13 +204,13 @@ export default function Movie() {
                     <Box key={movie.id}>
                       <Link
                         passHref
-                        href={`movies/${movie.slug.replace(
+                        href={`/movies/${movie.slug.replace(
                           `${movie.year}`,
                           `${movie?.id}`
                         )}`}
                       >
                         <Image
-                          src={movie?.largeCoverImage}
+                          src={movie?.mediumCoverImage}
                           h={{ lg: '500px', base: '350px' }}
                           w="333px"
                           border="6px solid white"
@@ -206,7 +218,7 @@ export default function Movie() {
                           alt={movie.slug as string}
                           loading="lazy"
                         />
-                        <Text>{movie.title}</Text>
+                        <Text mt="12px">{movie.title}</Text>
                       </Link>
                     </Box>
                   )

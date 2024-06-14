@@ -1,5 +1,4 @@
 import { Box, Heading, Stack } from '@chakra-ui/react'
-
 import { SlideShow } from '@/components/slide-show'
 import { useMovies } from '@/data/use-movies'
 import { useMoviesData } from '@/hooks/use-movies-data'
@@ -8,14 +7,13 @@ import { Loader } from '@/components/loader'
 import { getRandomMovies } from '@/utils/get-random-movies'
 
 export default function Home() {
-  const { moviesData, isLoading } = useMovies({
+  const { moviesData, isLoading, error } = useMovies({
     limit: '10'
   })
   const { movies } = useMoviesData(moviesData)
 
   const randMovies = getRandomMovies(movies, 5)
 
-  // eslint-disable-next-line no-console
   if (isLoading) {
     return <Loader />
   }

@@ -34,6 +34,10 @@ a {
   mask-image: linear-gradient(to bottom, #141414 30%, transparent);
 }
 
+:root {
+  --swiper-theme-color: #fff;
+}
+
 .icon {
   width: 24px;
   height: 24px;
@@ -51,13 +55,26 @@ h6 {
   line-height: 120%;
 }
 
-
 .swiper {
   width: 100%;
   height: 100%;
 }
 
+.swiper-container {
+  width: 100%;
+  height: 100%;
+}
+
 .swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  /* Center slide text vertically */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slide-show-slide {
   text-align: center;
   font-size: 18px;
   background: #141414;
@@ -68,7 +85,7 @@ h6 {
   align-items: center;
 }
 
-.swiper-slide img {
+.slide-show-slide img {
   display: block;
   width: 100%;
   height: 100%;
@@ -106,7 +123,36 @@ h6 {
 }
 
 .mySwiper {
-  position: absolute !important;
-  top: 0;
-  height: 80dvh;
+  min-height: 70dvh;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.swiper-wrapper {
+  box-sizing: border-box !important;
+}
+
+.swiper-wrapper:has(.carousel-slide) {
+  padding: 24px 0;
+}
+
+.carousel-slide {
+  transition: 250ms all;
+
+  &:hover {
+    transform: scale(1.2) !important;
+    z-index: 1;
+    background-position: bottom;
+  }
+
+  &:first-child:hover {
+    margin: 0 40px;
+  }
+
+  &:last-child:hover {
+    margin: 0 -40px;
+  }
 }

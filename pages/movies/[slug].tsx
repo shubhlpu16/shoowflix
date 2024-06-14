@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { useMovies } from '@/data/use-movies'
-import { useMoviesData } from '@/hooks/use-movies-data'
 import {
+  Avatar,
   Box,
   Button,
   Fade,
@@ -15,14 +14,19 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalOverlay,
-  Spinner,
   Stack,
-  Text
+  Text,
+  VStack
 } from '@chakra-ui/react'
 import { BsFillPlayFill } from 'react-icons/bs'
 import StarRatings from 'react-star-ratings'
 import { useRouter } from 'next/router'
 import { WebtorPlayer } from '@/components/webtor-player'
+import { Loader } from '@/components/loader'
+import { useMoviesDetails } from '@/data/use-movies-details'
+import { useMoviesSuggestions } from '@/data/use-movies-suggestion'
+import { useMoviesData } from '../../hooks/use-movies-data'
+import Link from 'next/link'
 
 export default function Movie() {
   const router = useRouter()
@@ -30,35 +34,37 @@ export default function Movie() {
     isReady,
     query: { slug }
   } = router
+  //@ts-ignore
+  const movieId = slug?.split('-').slice(-1)[0]
 
   const [torrentHash, setTorrentHash] = useState('')
 
-  const { moviesData, isLoading } = useMovies(
-    { query_term: slug as string },
+  const { movieDetails: { data } = {}, isLoading } = useMoviesDetails(
+    { movie_id: movieId, with_cast: true },
     isReady
   )
 
+  const { suggestedMoviesData } = useMoviesSuggestions(movieId, isReady)
+  const suggested = useMoviesData(suggestedMoviesData)
+
   const isPageLoading = !isReady || isLoading
 
-  const { movies } = useMoviesData(moviesData)
+  const { movie } = data || {}
 
-  // useEffect(() => {
-  //   if (!isLoading && (count === 0 || count > 1)) {
-  //     router.push('/404')
-  //   }
-  // }, [count, isLoading, router])
+  if (isPageLoading) {
+    return <Loader />
+  }
 
   return (
     <Box
-      backgroundImage={movies[0]?.backgroundImage}
-      height="100%"
+      backgroundImage={movie?.backgroundImage}
       width="100%"
+      minH="100dvh"
       backgroundSize="cover"
       backgroundRepeat="no-repeat"
-      pos="absolute"
-      top={0}
+      transform="translateY(-60px)"
     >
-      <Box backdropFilter="brightness(0.2)" h="100%" overflow="auto">
+      <Box backdropFilter="brightness(0.2)" minHeight="100dvh">
         <Stack
           w={{ base: '100%', lg: '85%' }}
           h="100%"
@@ -66,89 +72,148 @@ export default function Movie() {
           margin="0 auto"
           justifyContent={isPageLoading ? 'center' : 'start'}
           alignItems="center"
-          p={{ base: '80px 16px', lg: '80px 24px' }}
+          p={{ base: '80px 16px 16px', lg: '80px 24px' }}
         >
-          {isPageLoading && <Spinner color="red" thickness="3px" size="lg" />}
-          {!isPageLoading && (
-            <Fade in={!isPageLoading}>
-              <Grid
-                gridTemplateColumns={{ base: '1fr', lg: '1fr 2fr' }}
-                gap="24px"
-                placeItems={{ base: 'center', lg: 'initial' }}
-              >
-                <GridItem>
-                  <Image
-                    src={movies[0]?.largeCoverImage}
-                    h={{ lg: '500px', base: '350px' }}
-                    w="333px"
-                    border="6px solid white"
-                    borderRadius="8px"
-                    alt={slug as string}
-                    loading="lazy"
-                  />
-                </GridItem>
-                <GridItem as={Stack} spacing="24px">
-                  <Heading
-                    textShadow="2px 2px 4px rgba(0,0,0,.45)"
-                    color="white"
-                    fontSize={{ lg: '45px', base: '24px' }}
-                  >
-                    {movies[0]?.title}
-                  </Heading>
-                  <Text fontSize="18px">{movies[0]?.year}</Text>
-                  <Text fontSize="18px">{movies[0]?.genres.join(' / ')}</Text>
-                  <Text fontSize="18px">{movies[0]?.runtime} min</Text>
-                  {movies[0]?.rating && (
-                    <Flex gap="8px" alignItems="center">
-                      <StarRatings
-                        rating={movies[0]?.rating / 2 ?? 5}
-                        starDimension="24px"
-                        starSpacing="1px"
-                        starRatedColor="#ffd700"
-                      />
-                      {movies[0]?.rating}/10
-                    </Flex>
-                  )}
-                  <Flex gap="24px">
-                    {movies[0]?.torrents.map((torrent: any) => (
-                      <Button
-                        colorScheme="red"
-                        key={torrent.hash}
-                        leftIcon={<BsFillPlayFill className="icon" />}
-                        onClick={() => setTorrentHash(torrent.hash)}
-                      >
-                        Play {torrent.quality}
-                      </Button>
-                    ))}
-                  </Flex>
-                  {movies[0]?.summary && (
-                    <Text
-                      fontSize="16px"
-                      fontStyle="italic"
-                      fontWeight={400}
-                      noOfLines={10}
-                    >
-                      Summary: {movies[0]?.summary}
-                    </Text>
-                  )}
-                </GridItem>
-              </Grid>
-              <Stack gap="24px" mt={{ base: '24px', xl: '40px' }}>
-                <Heading fontSize="24px" borderBottom="2px solid red" pb="4px">
-                  Trailers & More
+          <Fade in={!isPageLoading}>
+            <Grid
+              gridTemplateColumns={{ base: '1fr', lg: '1fr 2fr' }}
+              gap="24px"
+              placeItems={{ base: 'center', lg: 'initial' }}
+            >
+              <GridItem>
+                <Image
+                  src={movie?.largeCoverImage}
+                  h={{ lg: '500px', base: '350px' }}
+                  w="333px"
+                  border="6px solid white"
+                  borderRadius="8px"
+                  alt={slug as string}
+                  loading="lazy"
+                />
+              </GridItem>
+              <GridItem as={Stack} spacing="24px">
+                <Heading
+                  textShadow="2px 2px 4px rgba(0,0,0,.45)"
+                  color="white"
+                  fontSize={{ lg: '45px', base: '24px' }}
+                >
+                  {movie?.title}
                 </Heading>
+                <Text fontSize="18px">{movie?.year}</Text>
+                <Text fontSize="18px">{movie?.genres.join(' / ')}</Text>
+                <Text fontSize="18px">{movie?.runtime} min</Text>
+                {movie?.rating && (
+                  <Flex gap="8px" alignItems="center">
+                    <StarRatings
+                      rating={movie?.rating / 2 ?? 5}
+                      starDimension="24px"
+                      starSpacing="1px"
+                      starRatedColor="#ffd700"
+                    />
+                    {movie?.rating}/10
+                  </Flex>
+                )}
+                <Flex gap="24px">
+                  {movie?.torrents.map((torrent: any) => (
+                    <Button
+                      colorScheme="red"
+                      key={torrent.hash}
+                      leftIcon={<BsFillPlayFill className="icon" />}
+                      onClick={() => setTorrentHash(torrent.hash)}
+                    >
+                      Play {torrent.quality}
+                    </Button>
+                  ))}
+                </Flex>
+                {movie?.descriptionFull && (
+                  <Text
+                    fontSize="16px"
+                    fontStyle="italic"
+                    letterSpacing="1px"
+                    fontWeight={400}
+                    noOfLines={10}
+                  >
+                    Plot: {movie?.descriptionFull}
+                  </Text>
+                )}
+              </GridItem>
+            </Grid>
+            <Stack gap="24px" mt={{ base: '24px', xl: '40px' }}>
+              <Heading fontSize="24px" borderBottom="2px solid red" pb="4px">
+                Casts
+              </Heading>
+              <Stack direction="row" spacing="32px" mb="24px">
+                {movie?.cast.map(
+                  (c: {
+                    name: string
+                    urlSmallImage: string | undefined
+                    characterName: string
+                  }) => {
+                    return (
+                      <VStack spacing="2px" key={c.characterName}>
+                        <Avatar size="xl" src={c.urlSmallImage} />
+                        <Text>{c.characterName}</Text>
+                        <Text color="#9e9e9e" fontSize="14px">
+                          {c.name}
+                        </Text>
+                      </VStack>
+                    )
+                  }
+                )}
+              </Stack>
+              <Heading fontSize="24px" borderBottom="2px solid red" pb="4px">
+                Trailers & More
+              </Heading>
+              {movie?.ytTrailerCode ? (
                 <iframe
                   width="600"
                   height="400"
-                  src={`https://www.youtube.com/embed/${movies[0]?.ytTrailerCode}`}
-                  title={`${movies[0].title} - Trailer`}
+                  src={`https://www.youtube.com/embed/${movie.ytTrailerCode}`}
+                  title={`${movie.title} - Trailer`}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"
                   allowFullScreen
                 ></iframe>
+              ) : (
+                <Text color="white">No Trailers</Text>
+              )}
+              <Heading fontSize="24px" borderBottom="2px solid red" pb="4px">
+                Movies Like this
+              </Heading>
+              <Stack direction="row">
+                {suggested.movies.map(
+                  (movie: {
+                    largeCoverImage: string | undefined
+                    title: string
+                    slug: string
+                    year: string
+                    id: string
+                  }) => (
+                    <Box key={movie.id}>
+                      <Link
+                        passHref
+                        href={`movies/${movie.slug.replace(
+                          `${movie.year}`,
+                          `${movie?.id}`
+                        )}`}
+                      >
+                        <Image
+                          src={movie?.largeCoverImage}
+                          h={{ lg: '500px', base: '350px' }}
+                          w="333px"
+                          border="6px solid white"
+                          borderRadius="8px"
+                          alt={movie.slug as string}
+                          loading="lazy"
+                        />
+                        <Text>{movie.title}</Text>
+                      </Link>
+                    </Box>
+                  )
+                )}
               </Stack>
-            </Fade>
-          )}
+            </Stack>
+          </Fade>
         </Stack>
       </Box>
       <Modal
@@ -161,9 +226,9 @@ export default function Movie() {
           <ModalCloseButton />
           <ModalBody p="0" minH="400px" background={'black'}>
             <WebtorPlayer
-              imdbId={movies[0]?.imdbCode}
+              imdbId={movie?.imdbCode}
               hash={torrentHash}
-              poster={movies[0]?.largeCoverImage}
+              poster={movie?.largeCoverImage}
             />
           </ModalBody>
         </ModalContent>

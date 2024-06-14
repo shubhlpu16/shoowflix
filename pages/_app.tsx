@@ -2,7 +2,7 @@ import type { AppProps } from 'next/app'
 import { ChakraProvider } from '@chakra-ui/react'
 
 import { theme } from '@/styles/theme'
-import '@/styles/globals.css'
+import '@/styles/globals.scss'
 import Head from 'next/head'
 import { Navbar } from '@/components/navbar'
 

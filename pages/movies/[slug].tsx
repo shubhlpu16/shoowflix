@@ -115,7 +115,7 @@ export default function Movie() {
                     {movie?.rating}/10
                   </Flex>
                 )}
-                <Flex gap="24px">
+                <Flex gap="24px" flexWrap="wrap">
                   {movie?.torrents.map((torrent: any) => (
                     <Button
                       colorScheme="red"

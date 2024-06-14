@@ -7,7 +7,7 @@ import { Loader } from '@/components/loader'
 import { getRandomMovies } from '@/utils/get-random-movies'
 
 export default function Home() {
-  const { moviesData, isLoading, error } = useMovies({
+  const { moviesData, isLoading } = useMovies({
     limit: '10'
   })
   const { movies } = useMoviesData(moviesData)

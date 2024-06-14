@@ -5,7 +5,6 @@ import { useScrollLimit } from '@/hooks/use-scroll-limit'
 export const Navbar = () => {
   const limit = 20 // Change this value to set the scroll limit
   const hasScrolledPastLimit = useScrollLimit(limit)
-  console.log('🚀 ~ Navbar ~ hasScrolledPastLimit:', hasScrolledPastLimit)
   return (
     <Box>
       <HStack

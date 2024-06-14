@@ -4,12 +4,10 @@ export function useScrollLimit(limit: number): boolean {
   const [reached, setReached] = useState<boolean>(false)
 
   useEffect(() => {
-    function onScroll(e): void {
-      console.log('🚀 ~ onScroll ~ e:', e)
+    function onScroll(): void {
       const scrolled = window.scrollY < limit
       setReached(scrolled)
     }
-    console.log('🚀 ~ useEffect ~ window:', window)
 
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)

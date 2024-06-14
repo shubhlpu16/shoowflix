@@ -32,9 +32,9 @@ export function Caraousel({ movies }: CarauselProps) {
         onAutoplayTimeLeft={onAutoplayTimeLeft}
         className="mySwiper"
       >
-        {movies?.map((movie, index) => {
+        {movies?.map((movie) => {
           return (
-            <SwiperSlide className="mask">
+            <SwiperSlide className="mask" key={movie.imdbCode}>
               <Flex
                 backgroundImage={movie.backgroundImage}
                 backgroundSize="cover"

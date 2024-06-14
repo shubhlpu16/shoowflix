@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useMovies } from '@/data/use-movies'
 import { useMoviesData } from '@/hooks/use-movies-data'
 import {
@@ -40,7 +40,7 @@ export default function Movie() {
 
   const isPageLoading = !isReady || isLoading
 
-  const { movies, count } = useMoviesData(moviesData)
+  const { movies } = useMoviesData(moviesData)
 
   // useEffect(() => {
   //   if (!isLoading && (count === 0 || count > 1)) {

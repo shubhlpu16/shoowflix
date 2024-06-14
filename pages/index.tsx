@@ -1,11 +1,11 @@
-import { Box, Stack } from '@chakra-ui/react'
+import { Box, Spinner, Stack } from '@chakra-ui/react'
 
 import { Caraousel } from '@/components/caraousel'
 import { useMovies } from '@/data/use-movies'
 import { useMoviesData } from '@/hooks/use-movies-data'
 
 export default function Home() {
-  const { moviesData } = useMovies({
+  const { moviesData, isLoading } = useMovies({
     limit: '4'
   })
   const { movies } = useMoviesData(moviesData)
@@ -14,10 +14,26 @@ export default function Home() {
 
   return (
     <>
-      <Box>
-        <Stack spacing={8} as="section" background="gray.600">
-          <Caraousel movies={movies} />
-        </Stack>
+      <Box
+        h="100%"
+        background="gray.600"
+        alignItems={'center'}
+        justifyContent={'center'}
+        display="flex"
+      >
+        {isLoading && <Spinner color="red" thickness="3px" size="lg" />}
+        {!isLoading && (
+          <Stack
+            spacing={8}
+            as="section"
+            background="gray.600"
+            alignItems={'center'}
+            justifyContent={'center'}
+            h="100%"
+          >
+            <Caraousel movies={movies} />
+          </Stack>
+        )}
       </Box>
     </>
   )

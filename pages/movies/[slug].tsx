@@ -76,166 +76,174 @@ export default function Movie() {
           alignItems="center"
           p={{ base: '80px 16px 16px', lg: '80px 24px' }}
         >
-          {/* <Fade in={!isPageLoading}> */}
-          <Grid
-            gridTemplateColumns={{ base: '1fr', lg: '1fr 2fr' }}
-            gap="24px"
-            placeItems={{ base: 'center', lg: 'initial' }}
-          >
-            <GridItem>
-              <Image
-                src={movie?.largeCoverImage}
-                h={{ lg: '500px', base: '350px' }}
-                w="333px"
-                border="6px solid white"
-                borderRadius="8px"
-                alt={slug as string}
-                loading="lazy"
-              />
-            </GridItem>
-            <GridItem as={Stack} spacing="24px">
-              <Heading
-                textShadow="2px 2px 4px rgba(0,0,0,.45)"
-                color="white"
-                fontSize={{ lg: '45px', base: '24px' }}
-              >
-                {movie?.title}
-              </Heading>
-              <Text fontSize="18px">{movie?.year}</Text>
-              <Text fontSize="18px">{movie?.genres.join(' / ')}</Text>
-              <Text fontSize="18px">{movie?.runtime} min</Text>
-              {movie?.rating && (
-                <Flex gap="8px" alignItems="center">
-                  <StarRatings
-                    rating={movie?.rating / 2 ?? 5}
-                    starDimension="24px"
-                    starSpacing="1px"
-                    starRatedColor="#ffd700"
-                  />
-                  {movie?.rating}/10
-                </Flex>
-              )}
-              <Flex gap="24px">
-                {movie?.torrents.map((torrent: any) => (
-                  <Button
-                    colorScheme="red"
-                    key={torrent.hash}
-                    leftIcon={<BsFillPlayFill className="icon" />}
-                    onClick={() => setTorrentHash(torrent.hash)}
-                  >
-                    Play {torrent.quality}
-                  </Button>
-                ))}
-              </Flex>
-              {movie?.descriptionFull && (
-                <Text
-                  fontSize="16px"
-                  fontStyle="italic"
-                  letterSpacing="1px"
-                  fontWeight={400}
-                  noOfLines={10}
-                >
-                  Plot: {movie?.descriptionFull}
-                </Text>
-              )}
-            </GridItem>
-          </Grid>
-          <Stack gap="24px" mt={{ base: '24px', xl: '40px' }} w="100%">
-            {movie?.cast?.length > 0 && (
-              <>
-                <Heading fontSize="24px" borderBottom="2px solid red" pb="4px">
-                  Casts
-                </Heading>
-                <Stack
-                  direction="row"
-                  spacing="32px"
-                  mb="24px"
-                  flexWrap="wrap"
-                  justifyContent={{ base: 'center', xl: 'start' }}
-                >
-                  {movie?.cast?.map(
-                    (c: {
-                      name: string
-                      urlSmallImage: string | undefined
-                      characterName: string
-                    }) => {
-                      return (
-                        <VStack spacing="2px" key={c.characterName}>
-                          <Avatar size="xl" src={c.urlSmallImage} />
-                          <Text>{c.characterName}</Text>
-                          <Text color="#9e9e9e" fontSize="14px">
-                            {c.name}
-                          </Text>
-                        </VStack>
-                      )
-                    }
-                  )}
-                </Stack>
-              </>
-            )}
-            {movie?.ytTrailerCode && (
-              <>
-                <Heading fontSize="24px" borderBottom="2px solid red" pb="4px">
-                  Trailers & More
-                </Heading>
-                <iframe
-                  width={isMobile ? '100%' : '600'}
-                  height="400"
-                  src={`https://www.youtube.com/embed/${movie.ytTrailerCode}`}
-                  title={`${movie.title} - Trailer`}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                ></iframe>
-              </>
-            )}
-            <Heading fontSize="24px" borderBottom="2px solid red" pb="4px">
-              Movies like this
-            </Heading>
-            <Stack
-              direction="row"
-              flexWrap="wrap"
+          <Fade in={!isPageLoading}>
+            <Grid
+              gridTemplateColumns={{ base: '1fr', lg: '1fr 2fr' }}
               gap="24px"
-              justifyContent={{ base: 'center', xl: 'start' }}
+              placeItems={{ base: 'center', lg: 'initial' }}
             >
-              {suggested.movies.map(
-                (movie: {
-                  mediumCoverImage: string | undefined
-                  title: string
-                  slug: string
-                  year: string
-                  id: string
-                }) => (
-                  <Box key={movie.id}>
-                    <Link
-                      passHref
-                      href={`/movies/${movie.slug.replace(
-                        `${movie.year}`,
-                        `${movie?.id}`
-                      )}`}
+              <GridItem>
+                <Image
+                  src={movie?.largeCoverImage}
+                  h={{ lg: '500px', base: '350px' }}
+                  w="333px"
+                  border="6px solid white"
+                  borderRadius="8px"
+                  alt={slug as string}
+                  loading="lazy"
+                />
+              </GridItem>
+              <GridItem as={Stack} spacing="24px">
+                <Heading
+                  textShadow="2px 2px 4px rgba(0,0,0,.45)"
+                  color="white"
+                  fontSize={{ lg: '45px', base: '24px' }}
+                >
+                  {movie?.title}
+                </Heading>
+                <Text fontSize="18px">{movie?.year}</Text>
+                <Text fontSize="18px">{movie?.genres.join(' / ')}</Text>
+                <Text fontSize="18px">{movie?.runtime} min</Text>
+                {movie?.rating && (
+                  <Flex gap="8px" alignItems="center">
+                    <StarRatings
+                      rating={movie?.rating / 2 ?? 5}
+                      starDimension="24px"
+                      starSpacing="1px"
+                      starRatedColor="#ffd700"
+                    />
+                    {movie?.rating}/10
+                  </Flex>
+                )}
+                <Flex gap="24px">
+                  {movie?.torrents.map((torrent: any) => (
+                    <Button
+                      colorScheme="red"
+                      key={torrent.hash}
+                      leftIcon={<BsFillPlayFill className="icon" />}
+                      onClick={() => setTorrentHash(torrent.hash)}
                     >
-                      <Image
-                        src={movie?.mediumCoverImage}
-                        h={{ lg: '500px', base: '350px' }}
-                        w="333px"
-                        border="6px solid white"
-                        borderRadius="8px"
-                        alt={movie.slug as string}
-                        loading="lazy"
-                      />
-                      <Text
-                        mt="12px"
-                        textAlign={{ base: 'center', xl: 'start' }}
-                      >
-                        {movie.title}
-                      </Text>
-                    </Link>
-                  </Box>
-                )
+                      Play {torrent.quality}
+                    </Button>
+                  ))}
+                </Flex>
+                {movie?.descriptionFull && (
+                  <Text
+                    fontSize="16px"
+                    fontStyle="italic"
+                    letterSpacing="1px"
+                    fontWeight={400}
+                    noOfLines={10}
+                  >
+                    Plot: {movie?.descriptionFull}
+                  </Text>
+                )}
+              </GridItem>
+            </Grid>
+            <Stack gap="24px" mt={{ base: '24px', xl: '40px' }} w="100%">
+              {movie?.cast?.length > 0 && (
+                <>
+                  <Heading
+                    fontSize="24px"
+                    borderBottom="2px solid red"
+                    pb="4px"
+                  >
+                    Casts
+                  </Heading>
+                  <Stack
+                    direction="row"
+                    spacing="32px"
+                    mb="24px"
+                    flexWrap="wrap"
+                    justifyContent={{ base: 'center', xl: 'start' }}
+                  >
+                    {movie?.cast?.map(
+                      (c: {
+                        name: string
+                        urlSmallImage: string | undefined
+                        characterName: string
+                      }) => {
+                        return (
+                          <VStack spacing="2px" key={c.characterName}>
+                            <Avatar size="xl" src={c.urlSmallImage} />
+                            <Text>{c.characterName}</Text>
+                            <Text color="#9e9e9e" fontSize="14px">
+                              {c.name}
+                            </Text>
+                          </VStack>
+                        )
+                      }
+                    )}
+                  </Stack>
+                </>
               )}
+              {movie?.ytTrailerCode && (
+                <>
+                  <Heading
+                    fontSize="24px"
+                    borderBottom="2px solid red"
+                    pb="4px"
+                  >
+                    Trailers & More
+                  </Heading>
+                  <iframe
+                    width={isMobile ? '100%' : '600'}
+                    height="400"
+                    src={`https://www.youtube.com/embed/${movie.ytTrailerCode}`}
+                    title={`${movie.title} - Trailer`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  ></iframe>
+                </>
+              )}
+              <Heading fontSize="24px" borderBottom="2px solid red" pb="4px">
+                Movies like this
+              </Heading>
+              <Stack
+                direction="row"
+                flexWrap="wrap"
+                gap="24px"
+                justifyContent={{ base: 'center', xl: 'start' }}
+              >
+                {suggested.movies.map(
+                  (movie: {
+                    mediumCoverImage: string | undefined
+                    title: string
+                    slug: string
+                    year: string
+                    id: string
+                  }) => (
+                    <Box key={movie.id}>
+                      <Link
+                        passHref
+                        href={`/movies/${movie.slug.replace(
+                          `${movie.year}`,
+                          `${movie?.id}`
+                        )}`}
+                      >
+                        <Image
+                          src={movie?.mediumCoverImage}
+                          h={{ lg: '500px', base: '350px' }}
+                          w="333px"
+                          border="6px solid white"
+                          borderRadius="8px"
+                          alt={movie.slug as string}
+                          loading="lazy"
+                        />
+                        <Text
+                          mt="12px"
+                          textAlign={{ base: 'center', xl: 'start' }}
+                        >
+                          {movie.title}
+                        </Text>
+                      </Link>
+                    </Box>
+                  )
+                )}
+              </Stack>
             </Stack>
-          </Stack>
-          {/* </Fade> */}
+          </Fade>
         </Stack>
       </Box>
       <Modal

@@ -48,7 +48,7 @@ export default function Movie() {
 
   useEffect(() => {
     if (error) router.push('/404')
-  }, [error])
+  }, [error, router])
 
   const { suggestedMoviesData } = useMoviesSuggestions(movieId, isReady)
 

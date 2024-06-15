@@ -26,10 +26,13 @@ export const Search = () => {
     handler: () => setIsOpen(false)
   })
 
-  const { moviesData, isLoading } = useMovies({
-    limit: 5,
-    query_term: search
-  })
+  const { moviesData, isLoading } = useMovies(
+    {
+      limit: 5,
+      query_term: search
+    },
+    !!search
+  )
 
   useEffect(() => {
     const debouncedSearch = debounce(() => {
@@ -109,6 +112,7 @@ export const Search = () => {
                     width="50px"
                     height="80px"
                     alt={movie.title}
+                    loading="lazy"
                   />
                   <Text noOfLines={2}>{movie.title}</Text>
                 </ListItem>

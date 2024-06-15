@@ -144,7 +144,8 @@ img {
   padding: 24px 0;
 }
 
-.carousel-slide {
+.carousel-slide,
+.hover-card {
   transition: 250ms all;
 
   &:hover {

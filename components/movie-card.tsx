@@ -9,6 +9,7 @@ interface MovieCardProps {
   largeCoverImage: string
   mediumCoverImage: string
   title: string
+  className?: string
 }
 
 export const MovieCard = ({
@@ -17,7 +18,8 @@ export const MovieCard = ({
   id,
   largeCoverImage,
   mediumCoverImage,
-  title
+  title,
+  className = ''
 }: MovieCardProps) => {
   return (
     <Link passHref href={`movies/${slug.replace(`${year}`, `${id}`)}`}>
@@ -27,6 +29,7 @@ export const MovieCard = ({
         w="200px"
         backgroundPosition="center"
         backgroundSize="cover"
+        className={className}
 
         // backgroundRepeat="no-repeat"
       />

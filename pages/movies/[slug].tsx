@@ -25,9 +25,8 @@ import { WebtorPlayer } from '@/components/webtor-player'
 import { Loader } from '@/components/loader'
 import { useMoviesDetails } from '@/data/use-movies-details'
 import { useMoviesSuggestions } from '@/data/use-movies-suggestion'
-import Link from 'next/link'
 import { useResponsive } from '@/hooks/useResponsive'
-import { MovieCard } from '../../components/movie-card'
+import { MovieCard } from '@/components/movie-card'
 
 export default function Movie() {
   const router = useRouter()

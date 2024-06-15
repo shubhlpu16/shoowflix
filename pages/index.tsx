@@ -1,18 +1,39 @@
 import { Box, Heading, Stack } from '@chakra-ui/react'
 import { SlideShow } from '@/components/slide-show'
 import { useMovies } from '@/data/use-movies'
-import { useMoviesData } from '@/hooks/use-movies-data'
 import Carousel from '@/components/carousel'
 import { Loader } from '@/components/loader'
 import { getRandomMovies } from '@/utils/get-random-movies'
+import React from 'react'
+import { MoviesList } from '../components/movies-list'
 
 export default function Home() {
   const { moviesData, isLoading } = useMovies({
-    limit: '10'
+    limit: 10
   })
-  const { movies } = useMoviesData(moviesData)
 
-  const randMovies = getRandomMovies(movies, 5)
+  const { moviesData: recentlyAdded } = useMovies({
+    sort_by: 'year',
+    limit: 20
+  })
+
+  const genres = [
+    'Sci-Fi',
+    'Comedy',
+    'Action',
+    'Adventure',
+    'Crime',
+    'Fantasy',
+    'Mystery',
+    'Drama',
+    'Horror',
+    'Romance',
+    'War',
+    'Thriller',
+    'Animation'
+  ]
+
+  const randMovies = getRandomMovies(moviesData?.movies, 5)
 
   if (isLoading) {
     return <Loader />
@@ -28,16 +49,22 @@ export default function Home() {
       transform="translateY(-60px)"
     >
       <SlideShow movies={randMovies} />
-      <Box w="100%" h="100%" padding="24px">
-        <Heading
-          textShadow="2px 2px 4px rgba(0,0,0,.45)"
-          color="white"
-          fontSize="24px"
-        >
-          Upcoming
-        </Heading>
-        <Carousel movies={movies} />
-      </Box>
+      <Stack direction="column" w="100%" h="100%" padding="16px">
+        <Box>
+          <Heading
+            textShadow="2px 2px 4px rgba(0,0,0,.45)"
+            color="white"
+            fontSize="24px"
+            mb="12px"
+          >
+            Recently Added
+          </Heading>
+          <Carousel movies={recentlyAdded?.movies} />
+        </Box>
+        {genres.map((genre) => {
+          return <MoviesList key={genre} genre={genre} />
+        })}
+      </Stack>
     </Stack>
   )
 }

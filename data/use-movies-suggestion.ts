@@ -1,3 +1,4 @@
+import { useMoviesData } from '@/hooks/use-movies-data'
 import { useSwr } from './use-swr'
 
 export const useMoviesSuggestions = (movieId: string, execute?: boolean) => {
@@ -5,6 +6,6 @@ export const useMoviesSuggestions = (movieId: string, execute?: boolean) => {
     key: `/movie_suggestions.json?movie_id=${movieId}`,
     execute
   })
-
-  return { suggestedMoviesData, ...rest }
+  const movies = useMoviesData(suggestedMoviesData)
+  return { suggestedMoviesData: movies, ...rest }
 }

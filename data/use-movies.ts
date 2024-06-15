@@ -1,8 +1,9 @@
 import { getQueryParams } from '@/utils/get-query-params'
 import { useSwr } from './use-swr'
+import { useMoviesData } from '@/hooks/use-movies-data'
 
 export const useMovies = (
-  params?: { [key: string]: string } | undefined,
+  params?: { [key: string]: string | any } | undefined,
   execute?: boolean
 ) => {
   const { data, ...rest } = useSwr({
@@ -10,5 +11,7 @@ export const useMovies = (
     execute
   })
 
-  return { moviesData: data, ...rest }
+  const movies = useMoviesData(data)
+
+  return { moviesData: movies, ...rest }
 }

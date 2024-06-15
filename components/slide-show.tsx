@@ -47,7 +47,7 @@ export function SlideShow({ movies }: CarauselProps) {
                 key={movie.id}
                 alignItems="left"
                 textAlign="left"
-                width={{ xl: '45%', base: '80%' }}
+                width={{ xl: '45%', base: '100%' }}
                 gap="16px"
                 marginLeft={{ lg: '40px', base: '16px' }}
               >

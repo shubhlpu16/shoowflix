@@ -2,7 +2,7 @@ import React from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import { Navigation, Pagination } from 'swiper/modules'
-import { Box, ResponsiveValue } from '@chakra-ui/react'
+import { Box, Text } from '@chakra-ui/react'
 import Link from 'next/link'
 import { useResponsive } from '@/hooks/useResponsive'
 
@@ -14,7 +14,7 @@ const Carousel = ({ movies }: Props) => {
   const { isMobile } = useResponsive()
   return (
     <Swiper
-      slidesPerView={isMobile ? 3 : 6}
+      slidesPerView={isMobile ? 2 : 8}
       spaceBetween={10}
       slidesPerGroup={2}
       className="netflix-swiper"
@@ -26,9 +26,11 @@ const Carousel = ({ movies }: Props) => {
     >
       {movies.map(
         (movie: {
+          mediumCoverImage: string
+          title: string
           slug: string
           year: any
-          largeCoverImage: ResponsiveValue<string | (string & {})> | undefined
+          largeCoverImage: string
           id: string
         }) => (
           <SwiperSlide className="carousel-slide" key={movie.id}>
@@ -40,12 +42,24 @@ const Carousel = ({ movies }: Props) => {
               )}`}
             >
               <Box
-                backgroundImage={movie.largeCoverImage}
-                h="100%"
+                backgroundImage={
+                  movie.largeCoverImage || movie.mediumCoverImage
+                }
+                h="300px"
                 backgroundPosition="center"
                 backgroundSize="cover"
+
                 // backgroundRepeat="no-repeat"
               />
+              <Text
+                mt="12px"
+                textAlign={{ base: 'center', xl: 'start' }}
+                fontSize="14px"
+                width="80%"
+                noOfLines={2}
+              >
+                {movie.title}
+              </Text>
             </Link>
           </SwiperSlide>
         )

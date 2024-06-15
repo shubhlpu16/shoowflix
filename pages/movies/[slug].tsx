@@ -25,9 +25,8 @@ import { WebtorPlayer } from '@/components/webtor-player'
 import { Loader } from '@/components/loader'
 import { useMoviesDetails } from '@/data/use-movies-details'
 import { useMoviesSuggestions } from '@/data/use-movies-suggestion'
-import { useMoviesData } from '../../hooks/use-movies-data'
 import Link from 'next/link'
-import { useResponsive } from '../../hooks/useResponsive'
+import { useResponsive } from '@/hooks/useResponsive'
 
 export default function Movie() {
   const router = useRouter()
@@ -47,7 +46,6 @@ export default function Movie() {
   )
 
   const { suggestedMoviesData } = useMoviesSuggestions(movieId, isReady)
-  const suggested = useMoviesData(suggestedMoviesData)
 
   const isPageLoading = !isReady || isLoading
 
@@ -86,7 +84,7 @@ export default function Movie() {
                 <Image
                   src={movie?.largeCoverImage}
                   h={{ lg: '500px', base: '350px' }}
-                  w="333px"
+                  w={{ base: '200px', xl: '300px' }}
                   border="6px solid white"
                   borderRadius="8px"
                   alt={slug as string}
@@ -188,7 +186,7 @@ export default function Movie() {
                   </Heading>
                   <iframe
                     width={isMobile ? '100%' : '600'}
-                    height="400"
+                    height={isMobile ? '300' : '400'}
                     src={`https://www.youtube.com/embed/${movie.ytTrailerCode}`}
                     title={`${movie.title} - Trailer`}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -206,7 +204,7 @@ export default function Movie() {
                 gap="24px"
                 justifyContent={{ base: 'center', xl: 'start' }}
               >
-                {suggested.movies.map(
+                {suggestedMoviesData.movies.map(
                   (movie: {
                     mediumCoverImage: string | undefined
                     title: string
@@ -224,16 +222,16 @@ export default function Movie() {
                       >
                         <Image
                           src={movie?.mediumCoverImage}
-                          h={{ lg: '500px', base: '350px' }}
-                          w="333px"
-                          border="6px solid white"
-                          borderRadius="8px"
+                          h="300px"
+                          w="200px"
                           alt={movie.slug as string}
                           loading="lazy"
                         />
                         <Text
                           mt="12px"
                           textAlign={{ base: 'center', xl: 'start' }}
+                          noOfLines={[1, 2, 3]}
+                          w="200px"
                         >
                           {movie.title}
                         </Text>

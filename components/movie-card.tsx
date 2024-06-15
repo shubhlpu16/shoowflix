@@ -22,7 +22,7 @@ export const MovieCard = ({
   className = ''
 }: MovieCardProps) => {
   return (
-    <Link passHref href={`movies/${slug.replace(`${year}`, `${id}`)}`}>
+    <Link passHref href={`/movies/${slug.replace(`${year}`, `${id}`)}`}>
       <Box
         backgroundImage={largeCoverImage || mediumCoverImage}
         h="300px"

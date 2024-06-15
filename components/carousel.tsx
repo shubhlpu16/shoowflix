@@ -14,7 +14,7 @@ const Carousel = ({ movies }: Props) => {
   return (
     <Swiper
       slidesPerView={isMobile ? 2 : 8}
-      spaceBetween={10}
+      spaceBetween={20}
       slidesPerGroup={2}
       className="netflix-swiper"
       modules={[Pagination, Navigation]}
@@ -32,7 +32,10 @@ const Carousel = ({ movies }: Props) => {
           largeCoverImage: string
           id: string
         }) => (
-          <SwiperSlide className="carousel-slide" key={movie.id}>
+          <SwiperSlide
+            className={!isMobile ? 'carousel-slide' : ''}
+            key={movie.id}
+          >
             <MovieCard {...movie} />
           </SwiperSlide>
         )

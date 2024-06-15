@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Avatar,
   Box,
@@ -40,10 +40,15 @@ export default function Movie() {
 
   const [torrentHash, setTorrentHash] = useState('')
 
-  const { movieDetails: { data } = {}, isLoading } = useMoviesDetails(
-    { movie_id: movieId, with_cast: true },
-    isReady
-  )
+  const {
+    movieDetails: { data } = {},
+    isLoading,
+    error
+  } = useMoviesDetails({ movie_id: movieId, with_cast: true }, isReady)
+
+  useEffect(() => {
+    if (error) router.push('/404')
+  }, [error])
 
   const { suggestedMoviesData } = useMoviesSuggestions(movieId, isReady)
 

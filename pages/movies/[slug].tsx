@@ -27,6 +27,7 @@ import { useMoviesDetails } from '@/data/use-movies-details'
 import { useMoviesSuggestions } from '@/data/use-movies-suggestion'
 import Link from 'next/link'
 import { useResponsive } from '@/hooks/useResponsive'
+import { MovieCard } from '../../components/movie-card'
 
 export default function Movie() {
   const router = useRouter()
@@ -211,36 +212,15 @@ export default function Movie() {
               >
                 {suggestedMoviesData.movies.map(
                   (movie: {
-                    mediumCoverImage: string | undefined
+                    mediumCoverImage: string
+                    largeCoverImage: string
                     title: string
                     slug: string
                     year: string
                     id: string
                   }) => (
                     <Box key={movie.id}>
-                      <Link
-                        passHref
-                        href={`/movies/${movie.slug.replace(
-                          `${movie.year}`,
-                          `${movie?.id}`
-                        )}`}
-                      >
-                        <Image
-                          src={movie?.mediumCoverImage}
-                          h="300px"
-                          w="200px"
-                          alt={movie.slug as string}
-                          loading="lazy"
-                        />
-                        <Text
-                          mt="12px"
-                          textAlign={{ base: 'center', xl: 'start' }}
-                          noOfLines={[1, 2, 3]}
-                          w="200px"
-                        >
-                          {movie.title}
-                        </Text>
-                      </Link>
+                      <MovieCard {...movie} />
                     </Box>
                   )
                 )}

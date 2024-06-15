@@ -2,9 +2,8 @@ import React from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import { Navigation, Pagination } from 'swiper/modules'
-import { Box, Text } from '@chakra-ui/react'
-import Link from 'next/link'
 import { useResponsive } from '@/hooks/useResponsive'
+import { MovieCard } from '@/components/movie-card'
 
 type Props = {
   movies: any
@@ -34,33 +33,7 @@ const Carousel = ({ movies }: Props) => {
           id: string
         }) => (
           <SwiperSlide className="carousel-slide" key={movie.id}>
-            <Link
-              passHref
-              href={`movies/${movie.slug.replace(
-                `${movie.year}`,
-                `${movie?.id}`
-              )}`}
-            >
-              <Box
-                backgroundImage={
-                  movie.largeCoverImage || movie.mediumCoverImage
-                }
-                h="300px"
-                backgroundPosition="center"
-                backgroundSize="cover"
-
-                // backgroundRepeat="no-repeat"
-              />
-              <Text
-                mt="12px"
-                textAlign={{ base: 'center', xl: 'start' }}
-                fontSize="14px"
-                width="80%"
-                noOfLines={2}
-              >
-                {movie.title}
-              </Text>
-            </Link>
+            <MovieCard {...movie} />
           </SwiperSlide>
         )
       )}

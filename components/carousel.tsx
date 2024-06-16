@@ -14,7 +14,7 @@ const Carousel = ({ movies }: Props) => {
   return (
     <Swiper
       slidesPerView={isMobile ? 2 : 8}
-      spaceBetween={20}
+      spaceBetween={10}
       slidesPerGroup={2}
       className="netflix-swiper"
       modules={[Pagination, Navigation]}

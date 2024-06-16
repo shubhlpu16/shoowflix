@@ -26,7 +26,7 @@ export const MovieCard = ({
       <Box
         backgroundImage={largeCoverImage || mediumCoverImage}
         h="300px"
-        w="200px"
+        w={{ md: '200px', base: '169px' }}
         backgroundPosition="center"
         backgroundSize="cover"
         className={className}

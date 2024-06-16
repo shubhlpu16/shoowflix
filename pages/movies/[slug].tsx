@@ -39,6 +39,7 @@ export default function Movie() {
   const movieId = slug?.split('-').slice(-1)[0]
 
   const [torrentHash, setTorrentHash] = useState('')
+  const [torrentUrl, setTorrentUrl] = useState('')
 
   const {
     movieDetails: { data } = {},
@@ -47,6 +48,7 @@ export default function Movie() {
   } = useMoviesDetails({ movie_id: movieId, with_cast: true }, isReady)
 
   useEffect(() => {
+    setTorrentHash('')
     if (error) router.push('/404')
   }, [error, router])
 
@@ -124,7 +126,10 @@ export default function Movie() {
                       colorScheme="red"
                       key={torrent.hash}
                       leftIcon={<BsFillPlayFill className="icon" />}
-                      onClick={() => setTorrentHash(torrent.hash)}
+                      onClick={() => {
+                        setTorrentHash(torrent.hash)
+                        setTorrentUrl(torrent.url)
+                      }}
                     >
                       Play {torrent.quality}
                     </Button>
@@ -230,17 +235,22 @@ export default function Movie() {
       </Box>
       <Modal
         isOpen={!!torrentHash}
-        onClose={() => setTorrentHash('')}
-        size="4xl"
+        onClose={() => {
+          setTorrentHash('')
+          setTorrentUrl('')
+        }}
+        size="2xl"
+        isCentered
       >
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent w="85%">
           <ModalCloseButton />
           <ModalBody p="0" minH="400px" background={'black'}>
             <WebtorPlayer
               imdbId={movie?.imdbCode}
               hash={torrentHash}
               poster={movie?.largeCoverImage}
+              url={torrentUrl}
             />
           </ModalBody>
         </ModalContent>

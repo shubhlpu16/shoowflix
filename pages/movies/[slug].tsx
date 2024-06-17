@@ -252,14 +252,9 @@ export default function Movie() {
           </Fade>
         </Stack>
       </Box>
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        size="xl"
-        closeOnOverlayClick={false}
-      >
+      <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
         <ModalOverlay />
-        <ModalContent w="85%">
+        <ModalContent w="100%" maxW="80%">
           <ModalCloseButton />
           <ModalBody pt="24px" minH="400px" background={'black'} ref={modalRef}>
             <WebtorPlayer

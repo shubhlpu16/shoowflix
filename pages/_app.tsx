@@ -13,7 +13,37 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Shoow: Stream Movies</title>
         <meta name="description" content="An online movie streaming app" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/apple-touch-icon.png" />
+        <title>Shoowflix - Stream Movies</title>
+        <meta name="title" content="Shoowflix - Stream Movies" />
+        <meta
+          name="description"
+          content="Torrent streaming website without ads "
+        />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://metatags.io/" />
+        <meta property="og:title" content="Shoowflix - Stream Movies" />
+        <meta
+          property="og:description"
+          content="Torrent streaming website without ads "
+        />
+        <meta
+          property="og:image"
+          content="https://metatags.io/images/meta-tags.png"
+        />
+
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://metatags.io/" />
+        <meta property="twitter:title" content="Shoowflix - Stream Movies" />
+        <meta
+          property="twitter:description"
+          content="Torrent streaming website without ads "
+        />
+        <meta
+          property="twitter:image"
+          content="https://metatags.io/images/meta-tags.png"
+        />
       </Head>
       <ChakraProvider theme={theme}>
         <Navbar />

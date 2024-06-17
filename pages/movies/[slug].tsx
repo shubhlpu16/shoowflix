@@ -52,12 +52,6 @@ export default function Movie() {
   const modalRef = useRef(null)
 
   useEffect(() => {
-    document
-      .getElementById('close')
-      ?.addEventListener('click', () => console.log('here'), true)
-  }, [])
-
-  useEffect(() => {
     if (error) router.push('/404')
   }, [error, router])
 
@@ -74,13 +68,19 @@ export default function Movie() {
   return (
     <Box
       backgroundImage={movie?.backgroundImage}
+      pos={'absolute'}
+      top="-60px"
       width="100%"
       minH="100vh"
       backgroundSize="cover"
       backgroundRepeat="no-repeat"
-      transform="translateY(-60px)"
     >
-      <Box backdropFilter="brightness(0.2)" minHeight="100vh">
+      <Box
+        backdropFilter="brightness(0.2)"
+        minHeight="100vh"
+        paddingTop="120px"
+        height="max-content"
+      >
         <Stack
           w={{ base: '100%', lg: '85%' }}
           h="100%"

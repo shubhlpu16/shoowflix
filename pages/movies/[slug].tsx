@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   Avatar,
   Box,
@@ -11,7 +11,6 @@ import {
   Image,
   Modal,
   ModalBody,
-  ModalFooter,
   ModalCloseButton,
   ModalContent,
   ModalOverlay,
@@ -43,7 +42,6 @@ export default function Movie() {
   const [torrentHash, setTorrentHash] = useState('')
   console.log('🚀 ~ Movie ~ torrentHash:', torrentHash)
   const [torrentUrl, setTorrentUrl] = useState('')
-  const [isModalOpen, setIsModalOpen] = useState(false)
   const {
     movieDetails: { data } = {},
     isLoading,
@@ -51,13 +49,7 @@ export default function Movie() {
   } = useMoviesDetails({ movie_id: movieId, with_cast: true }, isReady)
 
   const { isOpen, onClose, onOpen } = useDisclosure()
-
-  useEffect(() => {
-    if (!isModalOpen) {
-      setTorrentHash('')
-      setTorrentUrl('')
-    }
-  }, [isModalOpen])
+  const modalRef = useRef(null)
 
   useEffect(() => {
     document
@@ -66,7 +58,6 @@ export default function Movie() {
   }, [])
 
   useEffect(() => {
-    setTorrentHash('')
     if (error) router.push('/404')
   }, [error, router])
 
@@ -266,14 +257,11 @@ export default function Movie() {
         onClose={onClose}
         size="xl"
         closeOnOverlayClick={false}
-        onCloseComplete={() => {
-          console.log('Close')
-        }}
       >
         <ModalOverlay />
         <ModalContent w="85%">
           <ModalCloseButton />
-          <ModalBody pt="24px" minH="400px" background={'black'}>
+          <ModalBody pt="24px" minH="400px" background={'black'} ref={modalRef}>
             <WebtorPlayer
               imdbId={movie?.imdbCode}
               hash={torrentHash}
@@ -281,18 +269,6 @@ export default function Movie() {
               url={torrentUrl}
             />
           </ModalBody>
-          <ModalFooter>
-            <Button
-              colorScheme="blue"
-              mr={3}
-              id="close"
-              onClick={() => {
-                console.log('here')
-              }}
-            >
-              Close
-            </Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </Box>

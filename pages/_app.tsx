@@ -22,19 +22,16 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
 
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://metatags.io/" />
+        <meta property="og:url" content="https://shoowflix.vercel.app" />
         <meta property="og:title" content="Shoowflix - Stream Movies" />
         <meta
           property="og:description"
           content="Torrent streaming website without ads "
         />
-        <meta
-          property="og:image"
-          content="https://metatags.io/images/meta-tags.png"
-        />
+        <meta property="og:image" content="/public/logo.png" />
 
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://metatags.io/" />
+        <meta property="twitter:url" content="https://shoowflix.vercel.app" />
         <meta property="twitter:title" content="Shoowflix - Stream Movies" />
         <meta
           property="twitter:description"
@@ -42,7 +39,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
         <meta
           property="twitter:image"
-          content="https://metatags.io/images/meta-tags.png"
+          content="https://shoowflix.vercel.appimages/meta-tags.png"
         />
       </Head>
       <ChakraProvider theme={theme}>

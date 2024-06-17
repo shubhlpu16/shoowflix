@@ -37,10 +37,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           property="twitter:description"
           content="Torrent streaming website without ads "
         />
-        <meta
-          property="twitter:image"
-          content="https://shoowflix.vercel.appimages/meta-tags.png"
-        />
+        <meta property="twitter:image" content="/public/background.png" />
       </Head>
       <ChakraProvider theme={theme}>
         <Navbar />

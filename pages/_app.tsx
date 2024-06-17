@@ -13,7 +13,10 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Shoow: Stream Movies</title>
         <meta name="description" content="An online movie streaming app" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/apple-touch-icon.png" />
+        <link
+          rel="icon"
+          href="https://shoowflix.vercel.app/apple-touch-icon.png"
+        />
       </Head>
       <Head>
         <title>Shoowflix - Stream Movies</title>

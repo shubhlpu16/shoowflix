@@ -3,7 +3,6 @@
 
 import React, { useEffect } from 'react'
 import { getMagnetURI } from '@/utils/get-magnet-uri'
-import { useResponsive } from '@/hooks/useResponsive'
 
 export interface WebTorPlayerProps {
   hash: string
@@ -18,8 +17,6 @@ export const WebtorPlayer = ({
   poster,
   url
 }: WebTorPlayerProps) => {
-  const { isMobile } = useResponsive()
-
   useEffect(() => {
     const play = () => {
       window.webtor = window.webtor || []
@@ -28,7 +25,7 @@ export const WebtorPlayer = ({
         className: 'player',
         magnet: getMagnetURI(hash, url),
         width: '100%',
-        height: isMobile ? '300px' : '400px',
+        height: '300px',
         imdmbid: imdbId,
         poster,
         features: {
@@ -68,6 +65,6 @@ export const WebtorPlayer = ({
     return () => {
       window.webtor = []
     }
-  }, [imdbId, hash, poster, url, isMobile])
+  }, [imdbId, hash, poster, url])
   return <div id="player" className="webtor"></div>
 }

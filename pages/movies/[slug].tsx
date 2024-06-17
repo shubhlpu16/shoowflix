@@ -254,9 +254,13 @@ export default function Movie() {
       </Box>
       <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
         <ModalOverlay />
-        <ModalContent w="100%" maxW="80%">
+        <ModalContent
+          w="100%"
+          maxW={{ base: '80%', xl: '60%' }}
+          minH={{ xl: '50%', base: '300px' }}
+        >
           <ModalCloseButton />
-          <ModalBody pt="24px" minH="400px" background={'black'} ref={modalRef}>
+          <ModalBody pt="24px" h="100%" background={'black'} ref={modalRef}>
             <WebtorPlayer
               imdbId={movie?.imdbCode}
               hash={torrentHash}

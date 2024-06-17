@@ -28,7 +28,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           property="og:description"
           content="Torrent streaming website without ads "
         />
-        <meta property="og:image" content="/public/logo.png" />
+        <meta property="og:image" content="/public/background.png" />
 
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://shoowflix.vercel.app" />

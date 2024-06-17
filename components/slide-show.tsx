@@ -50,6 +50,7 @@ export function SlideShow({ movies }: CarauselProps) {
                 width={{ xl: '45%', base: '100%' }}
                 gap="16px"
                 marginLeft={{ lg: '40px', base: '16px' }}
+                paddingTop={{ xl: '24px' }}
               >
                 <Heading
                   textShadow="2px 2px 4px rgba(0,0,0,.45)"

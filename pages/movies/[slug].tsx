@@ -11,10 +11,12 @@ import {
   Image,
   Modal,
   ModalBody,
+  ModalFooter,
   ModalCloseButton,
   ModalContent,
   ModalOverlay,
   Stack,
+  useDisclosure,
   Text,
   VStack
 } from '@chakra-ui/react'
@@ -39,13 +41,29 @@ export default function Movie() {
   const movieId = slug?.split('-').slice(-1)[0]
 
   const [torrentHash, setTorrentHash] = useState('')
+  console.log('🚀 ~ Movie ~ torrentHash:', torrentHash)
   const [torrentUrl, setTorrentUrl] = useState('')
-
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const {
     movieDetails: { data } = {},
     isLoading,
     error
   } = useMoviesDetails({ movie_id: movieId, with_cast: true }, isReady)
+
+  const { isOpen, onClose, onOpen } = useDisclosure()
+
+  useEffect(() => {
+    if (!isModalOpen) {
+      setTorrentHash('')
+      setTorrentUrl('')
+    }
+  }, [isModalOpen])
+
+  useEffect(() => {
+    document
+      .getElementById('close')
+      ?.addEventListener('click', () => console.log('here'), true)
+  }, [])
 
   useEffect(() => {
     setTorrentHash('')
@@ -66,12 +84,12 @@ export default function Movie() {
     <Box
       backgroundImage={movie?.backgroundImage}
       width="100%"
-      minH="100dvh"
+      minH="100vh"
       backgroundSize="cover"
       backgroundRepeat="no-repeat"
       transform="translateY(-60px)"
     >
-      <Box backdropFilter="brightness(0.2)" minHeight="100dvh">
+      <Box backdropFilter="brightness(0.2)" minHeight="100vh">
         <Stack
           w={{ base: '100%', lg: '85%' }}
           h="100%"
@@ -127,6 +145,7 @@ export default function Movie() {
                       key={torrent.hash}
                       leftIcon={<BsFillPlayFill className="icon" />}
                       onClick={() => {
+                        onOpen()
                         setTorrentHash(torrent.hash)
                         setTorrentUrl(torrent.url)
                       }}
@@ -148,7 +167,16 @@ export default function Movie() {
                 )}
               </GridItem>
             </Grid>
+
             <Stack gap="24px" mt={{ base: '24px', xl: '40px' }} w="100%">
+              {/* {torrentHash && (
+                <WebtorPlayer
+                  imdbId={movie?.imdbCode}
+                  hash={torrentHash}
+                  poster={movie?.largeCoverImage}
+                  url={torrentUrl}
+                />
+              )} */}
               {movie?.cast?.length > 0 && (
                 <>
                   <Heading
@@ -234,18 +262,18 @@ export default function Movie() {
         </Stack>
       </Box>
       <Modal
-        isOpen={!!torrentHash}
-        onClose={() => {
-          setTorrentHash('')
-          setTorrentUrl('')
+        isOpen={isOpen}
+        onClose={onClose}
+        size="xl"
+        closeOnOverlayClick={false}
+        onCloseComplete={() => {
+          console.log('Close')
         }}
-        size="2xl"
-        isCentered
       >
         <ModalOverlay />
         <ModalContent w="85%">
           <ModalCloseButton />
-          <ModalBody p="0" minH="400px" background={'black'}>
+          <ModalBody pt="24px" minH="400px" background={'black'}>
             <WebtorPlayer
               imdbId={movie?.imdbCode}
               hash={torrentHash}
@@ -253,6 +281,18 @@ export default function Movie() {
               url={torrentUrl}
             />
           </ModalBody>
+          <ModalFooter>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              id="close"
+              onClick={() => {
+                console.log('here')
+              }}
+            >
+              Close
+            </Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </Box>

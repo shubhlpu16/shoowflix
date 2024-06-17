@@ -162,3 +162,8 @@ img {
     margin: 0 -40px;
   }
 }
+
+iframe:has(.hide) {
+  display: none;
+  height: 0 !important;
+}

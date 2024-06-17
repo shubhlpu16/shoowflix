@@ -19,14 +19,17 @@ export const WebtorPlayer = ({
   poster,
   url
 }: WebTorPlayerProps) => {
+  console.log('🚀 ~ hash:', hash)
   useEffect(() => {
+    console.log('WebtorPlayer')
     const play = () => {
+      window.webtor = window.webtor || []
       window.webtor.push({
         id: 'player',
+        className: 'player',
         magnet: getMagnetURI(hash, url),
         width: '100%',
         height: '400px',
-        torrentUrl: url,
         on: function (e) {
           if (e.name == window.webtor.INITED) {
             e.player.play()
@@ -41,6 +44,7 @@ export const WebtorPlayer = ({
         imdmbid: imdbId,
         poster,
         features: {
+          controls: false,
           download: true,
           autoSubtitles: true,
           continue: true,
@@ -71,33 +75,23 @@ export const WebtorPlayer = ({
       })
     }
 
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker
-        .register('/sw.min.js', { scope: '/' })
-        .then((reg) => {
-          const worker = reg.active || reg.waiting || reg.installing
-
-          const checkState = (worker) => {
-            if (worker.state === 'activated') {
-              play()
-              return true
-            }
-            return false
-          }
-
-          if (!checkState(worker)) {
-            worker.addEventListener('statechange', ({ target }) =>
-              checkState(target)
-            )
-          }
-        })
-        .catch((error) => {
-          console.error('Service Worker registration failed:', error)
-        })
-    } else {
-      console.warn('Service Workers are not supported in this browser')
+    play()
+    return () => {
+      window.webtor = []
+      console.log('close')
     }
-  }, [hash, url, imdbId, poster])
+  }, [hash, imdbId, poster, url])
 
-  return <div id="player"></div>
+  return (
+    <>
+      <div id="player"></div>
+      <button
+        onClick={() => {
+          window.webtor = []
+        }}
+      >
+        hhi
+      </button>
+    </>
+  )
 }

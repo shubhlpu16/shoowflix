@@ -61,7 +61,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <SpeedInsights />
       </ChakraProvider>
       <script
-        src="https://cdn.jsdelivr.net/npm/@webtor/player-sdk-js/dist/index.min.js"
+        src="https://cdn.jsdelivr.net/npm/@webtor/embed-sdk-js/dist/index.min.js"
         async
       ></script>
     </>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import {
   Avatar,
   Box,
@@ -9,13 +9,7 @@ import {
   GridItem,
   Heading,
   Image,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalOverlay,
   Stack,
-  useDisclosure,
   Text,
   VStack
 } from '@chakra-ui/react'
@@ -39,17 +33,13 @@ export default function Movie() {
   //@ts-ignore
   const movieId = slug?.split('-').slice(-1)[0]
 
-  const [torrentHash, setTorrentHash] = useState('')
-  console.log('🚀 ~ Movie ~ torrentHash:', torrentHash)
-  const [torrentUrl, setTorrentUrl] = useState('')
   const {
     movieDetails: { data } = {},
     isLoading,
     error
   } = useMoviesDetails({ movie_id: movieId, with_cast: true }, isReady)
 
-  const { isOpen, onClose, onOpen } = useDisclosure()
-  const modalRef = useRef(null)
+  const playerRef = useRef(null)
 
   useEffect(() => {
     if (error) router.push('/404')
@@ -136,9 +126,15 @@ export default function Movie() {
                       key={torrent.hash}
                       leftIcon={<BsFillPlayFill className="icon" />}
                       onClick={() => {
-                        onOpen()
-                        setTorrentHash(torrent.hash)
-                        setTorrentUrl(torrent.url)
+                        if (playerRef.current) {
+                          //@ts-ignore
+                          playerRef.current?.load(
+                            torrent.hash,
+                            torrent.url,
+                            movie?.imdbCode,
+                            movie?.largeCoverImage
+                          )
+                        }
                       }}
                     >
                       Play {torrent.quality}
@@ -160,14 +156,7 @@ export default function Movie() {
             </Grid>
 
             <Stack gap="24px" mt={{ base: '24px', xl: '40px' }} w="100%">
-              {/* {torrentHash && (
-                <WebtorPlayer
-                  imdbId={movie?.imdbCode}
-                  hash={torrentHash}
-                  poster={movie?.largeCoverImage}
-                  url={torrentUrl}
-                />
-              )} */}
+              <WebtorPlayer ref={playerRef} />
               {movie?.cast?.length > 0 && (
                 <>
                   <Heading
@@ -252,24 +241,15 @@ export default function Movie() {
           </Fade>
         </Stack>
       </Box>
-      <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
+      {/* <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
         <ModalOverlay />
-        <ModalContent
-          w="100%"
-          maxW={{ base: '80%', xl: '60%' }}
-          minH={{ xl: '50%', base: '300px' }}
-        >
+        <ModalContent w="100%" maxW={{ base: '90%', xl: '60%' }} minH="300px">
           <ModalCloseButton />
           <ModalBody pt="24px" h="100%" background={'black'} ref={modalRef}>
-            <WebtorPlayer
-              imdbId={movie?.imdbCode}
-              hash={torrentHash}
-              poster={movie?.largeCoverImage}
-              url={torrentUrl}
-            />
+            <WebtorPlayer ref={playerRef} />
           </ModalBody>
         </ModalContent>
-      </Modal>
+      </Modal> */}
     </Box>
   )
 }

@@ -4,6 +4,7 @@
   "rules": {
     "prettier/prettier": "error",
     "no-console": "off",
-    "no-unused-vars": "error"
+    "no-unused-vars": "error",
+    "react/display-name": "off"
   }
 }

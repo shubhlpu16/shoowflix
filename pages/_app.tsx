@@ -5,6 +5,8 @@ import { theme } from '@/styles/theme'
 import '@/styles/globals.scss'
 import Head from 'next/head'
 import { Navbar } from '@/components/navbar'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -55,6 +57,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ChakraProvider theme={theme}>
         <Navbar />
         <Component {...pageProps} />
+        <Analytics />
+        <SpeedInsights />
       </ChakraProvider>
       <script
         src="https://cdn.jsdelivr.net/npm/@webtor/player-sdk-js/dist/index.min.js"

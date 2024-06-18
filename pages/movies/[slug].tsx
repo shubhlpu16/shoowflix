@@ -9,9 +9,15 @@ import {
   GridItem,
   Heading,
   Image,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalOverlay,
   Stack,
   Text,
-  VStack
+  VStack,
+  useDisclosure
 } from '@chakra-ui/react'
 import { BsFillPlayFill } from 'react-icons/bs'
 import StarRatings from 'react-star-ratings'
@@ -22,6 +28,7 @@ import { useMoviesDetails } from '@/data/use-movies-details'
 import { useMoviesSuggestions } from '@/data/use-movies-suggestion'
 import { useResponsive } from '@/hooks/useResponsive'
 import { MovieCard } from '@/components/movie-card'
+import { play } from '@/utils/play'
 
 export default function Movie() {
   const router = useRouter()
@@ -32,6 +39,8 @@ export default function Movie() {
   } = router
   //@ts-ignore
   const movieId = slug?.split('-').slice(-1)[0]
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const {
     movieDetails: { data } = {},
@@ -126,15 +135,24 @@ export default function Movie() {
                       key={torrent.hash}
                       leftIcon={<BsFillPlayFill className="icon" />}
                       onClick={() => {
-                        if (playerRef.current) {
-                          //@ts-ignore
-                          playerRef.current?.load(
+                        onOpen()
+                        // if (playerRef.current) {
+                        //   //@ts-ignore
+                        //   playerRef.current?.load(
+                        //     torrent.hash,
+                        //     torrent.url,
+                        //     movie?.imdbCode,
+                        //     movie?.largeCoverImage
+                        //   )
+                        // }
+                        setTimeout(() => {
+                          play(
                             torrent.hash,
-                            torrent.url,
                             movie?.imdbCode,
-                            movie?.largeCoverImage
+                            movie?.largeCoverImage,
+                            torrent.url
                           )
-                        }
+                        }, 100)
                       }}
                     >
                       Play {torrent.quality}
@@ -156,7 +174,7 @@ export default function Movie() {
             </Grid>
 
             <Stack gap="24px" mt={{ base: '24px', xl: '40px' }} w="100%">
-              <WebtorPlayer ref={playerRef} />
+              {/*  <WebtorPlayer ref={playerRef} /> */}
               {movie?.cast?.length > 0 && (
                 <>
                   <Heading
@@ -241,15 +259,15 @@ export default function Movie() {
           </Fade>
         </Stack>
       </Box>
-      {/* <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
+      <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
         <ModalOverlay />
-        <ModalContent w="100%" maxW={{ base: '90%', xl: '60%' }} minH="300px">
-          <ModalCloseButton />
-          <ModalBody pt="24px" h="100%" background={'black'} ref={modalRef}>
+        <ModalContent w="100%" maxW={{ base: '90%', xl: '50%' }} minH="300px">
+          <ModalCloseButton zIndex={2} />
+          <ModalBody pt="24px" h="100%" background={'black'}>
             <WebtorPlayer ref={playerRef} />
           </ModalBody>
         </ModalContent>
-      </Modal> */}
+      </Modal>
     </Box>
   )
 }

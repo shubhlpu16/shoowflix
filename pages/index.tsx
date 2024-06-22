@@ -1,4 +1,4 @@
-import { Box, Heading, Stack } from '@chakra-ui/react'
+import { Box, Button, Heading, Stack } from '@chakra-ui/react'
 import { SlideShow } from '@/components/slide-show'
 import { useMovies } from '@/data/use-movies'
 import Carousel from '@/components/carousel'
@@ -6,6 +6,7 @@ import { Loader } from '@/components/loader'
 import { getRandomMovies } from '@/utils/get-random-movies'
 import React from 'react'
 import { MoviesList } from '../components/movies-list'
+import { signIn } from 'next-auth/react'
 
 export default function Home() {
   const { moviesData, isLoading } = useMovies({
@@ -49,6 +50,7 @@ export default function Home() {
       transform="translateY(-60px)"
     >
       <SlideShow movies={randMovies} />
+      <Button onClick={() => signIn()} colorScheme="blue" />
       <Stack direction="column" w="100%" h="100%" padding="16px">
         <Box>
           <Heading

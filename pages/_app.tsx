@@ -7,8 +7,9 @@ import Head from 'next/head'
 import { Navbar } from '@/components/navbar'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { SessionProvider } from 'next-auth/react'
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <>
       <Head>
@@ -54,12 +55,14 @@ function MyApp({ Component, pageProps }: AppProps) {
           content="https://shoowflix.vercel.app/background.png"
         />
       </Head>
-      <ChakraProvider theme={theme}>
-        <Navbar />
-        <Component {...pageProps} />
-        <Analytics />
-        <SpeedInsights />
-      </ChakraProvider>
+      <SessionProvider session={session}>
+        <ChakraProvider theme={theme}>
+          <Navbar />
+          <Component {...pageProps} />
+          <Analytics />
+          <SpeedInsights />
+        </ChakraProvider>
+      </SessionProvider>
       <script
         src="https://cdn.jsdelivr.net/npm/@webtor/embed-sdk-js/dist/index.min.js"
         async

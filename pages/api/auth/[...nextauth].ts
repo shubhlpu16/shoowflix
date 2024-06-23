@@ -6,8 +6,9 @@ import GithubProvider from 'next-auth/providers/github'
 
 const prisma = new PrismaClient()
 
-export const authOptions = NextAuth({
+export const authOptions = {
   adapter: PrismaAdapter(prisma) as any,
+
   providers: [
     GoogleProvider({
       clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string,
@@ -20,7 +21,11 @@ export const authOptions = NextAuth({
       clientId: process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID as string,
       clientSecret: process.env.NEXT_PUBLIC_GITHUB_CLIENT_SECRET as string
     })
-  ]
-})
+  ],
+  session: {
+    strategy: 'jwt'
+  }
+}
 
-export default authOptions
+// @ts-ignore
+export default NextAuth(authOptions)

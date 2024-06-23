@@ -14,9 +14,9 @@ datasource db {
 }
 
 model User {
-  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
-  email         String?         @unique
+  email         String?   @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
@@ -29,19 +29,19 @@ model User {
 }
 
 model Account {
-  id                String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId            String  @db.ObjectId
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String? @db.String
+  id                       String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId                   String  @db.ObjectId
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String? @db.String
   refresh_token_expires_in Int?
-  access_token      String? @db.String
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? @db.String
-  session_state     String?
+  access_token             String? @db.String
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String? @db.String
+  session_state            String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -86,10 +86,9 @@ model VerificationToken {
 
 //   @@unique([userId, credentialID])
 // }
-
 model UserFeturedMovies {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
   user     User     @relation(fields: [userId], references: [id])
-  userId   String   @db.ObjectId
+  userId   String   @unique @db.ObjectId
   movieIds String[]
 }

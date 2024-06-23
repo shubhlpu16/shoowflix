@@ -8,6 +8,7 @@ import {
   Grid,
   GridItem,
   Heading,
+  Icon,
   Image,
   Modal,
   ModalBody,
@@ -17,7 +18,8 @@ import {
   Stack,
   Text,
   VStack,
-  useDisclosure
+  useDisclosure,
+  useToast
 } from '@chakra-ui/react'
 import { BsFillPlayFill } from 'react-icons/bs'
 import StarRatings from 'react-star-ratings'
@@ -27,8 +29,14 @@ import { Loader } from '@/components/loader'
 import { useMoviesDetails } from '@/data/use-movies-details'
 import { useMoviesSuggestions } from '@/data/use-movies-suggestion'
 import { useResponsive } from '@/hooks/useResponsive'
-import { MovieCard } from '@/components/movie-card'
+// import { MovieCard } from '@/components/movie-card'
 import { play } from '@/utils/play'
+import axios from 'axios'
+import useSWR from 'swr'
+import { fetcher } from '@/data/use-swr'
+import { MdFavorite, MdFavoriteBorder } from 'react-icons/md'
+import { signIn, useSession } from 'next-auth/react'
+import Carousel from '@/components/carousel'
 
 export default function Movie() {
   const router = useRouter()
@@ -37,6 +45,7 @@ export default function Movie() {
     isReady,
     query: { slug }
   } = router
+  const { data: session } = useSession()
   //@ts-ignore
   const movieId = slug?.split('-').slice(-1)[0]
 
@@ -48,6 +57,12 @@ export default function Movie() {
     error
   } = useMoviesDetails({ movie_id: movieId, with_cast: true }, isReady)
 
+  const { data: { isFavourite } = {}, mutate } = useSWR(
+    [`/api/check-favourite?movieId=${movieId}`],
+    fetcher
+  )
+
+  const toast = useToast()
   const playerRef = useRef(null)
 
   useEffect(() => {
@@ -59,6 +74,32 @@ export default function Movie() {
   const isPageLoading = !isReady || isLoading
 
   const { movie } = data || {}
+
+  const handleToggleFavourite = async () => {
+    try {
+      if (!session) {
+        signIn()
+        return
+      }
+      await axios.post('/api/favourite', { movieId })
+      toast({
+        title: isFavourite ? 'Removed from favourites' : 'Added to favourites',
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+        position: 'top'
+      })
+      mutate({ isFavourite: true })
+    } catch (error) {
+      toast({
+        title: isFavourite ? 'Error removing movie' : 'Error adding movie',
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+        position: 'top'
+      })
+    }
+  }
 
   if (isPageLoading) {
     return <Loader />
@@ -81,17 +122,16 @@ export default function Movie() {
         height="max-content"
       >
         <Stack
-          w={{ base: '100%', lg: '85%' }}
+          w={{ base: '100%' }}
           h="100%"
-          maxW="1440px"
-          margin="0 auto"
+          // maxW="1440px"
+          // margin="0 auto"
           justifyContent={isPageLoading ? 'center' : 'start'}
-          alignItems="center"
           p={{ base: '80px 16px 16px', lg: '80px 24px' }}
         >
           <Fade in={!isPageLoading}>
             <Grid
-              gridTemplateColumns={{ base: '1fr', lg: '1fr 2fr' }}
+              gridTemplateColumns={{ base: '1fr', lg: '400px 2fr' }}
               gap="24px"
               placeItems={{ base: 'center', lg: 'initial' }}
             >
@@ -128,6 +168,13 @@ export default function Movie() {
                     {movie?.rating}/10
                   </Flex>
                 )}
+                <Icon
+                  as={isFavourite ? MdFavorite : MdFavoriteBorder}
+                  boxSize="44px"
+                  onClick={handleToggleFavourite}
+                  sx={{ cursor: 'pointer' }}
+                  color={isFavourite ? 'red' : 'white'}
+                ></Icon>
                 <Flex gap="24px" flexWrap="wrap">
                   {movie?.torrents.map((torrent: any) => (
                     <Button
@@ -135,6 +182,10 @@ export default function Movie() {
                       key={torrent.hash}
                       leftIcon={<BsFillPlayFill className="icon" />}
                       onClick={() => {
+                        if (!session) {
+                          signIn()
+                          return
+                        }
                         onOpen()
                         // if (playerRef.current) {
                         //   //@ts-ignore
@@ -180,7 +231,7 @@ export default function Movie() {
                   <Heading
                     fontSize="24px"
                     borderBottom="2px solid red"
-                    pb="4px"
+                    pb="16px"
                   >
                     Casts
                   </Heading>
@@ -200,8 +251,16 @@ export default function Movie() {
                         return (
                           <VStack spacing="2px" key={c.characterName}>
                             <Avatar size="xl" src={c.urlSmallImage} />
-                            <Text>{c.characterName}</Text>
-                            <Text color="#9e9e9e" fontSize="14px">
+                            <Text width="100%" noOfLines={2} textAlign="center">
+                              {c.characterName}
+                            </Text>
+                            <Text
+                              width="90%"
+                              color="#9e9e9e"
+                              fontSize="14px"
+                              noOfLines={2}
+                              textAlign="center"
+                            >
                               {c.name}
                             </Text>
                           </VStack>
@@ -216,7 +275,7 @@ export default function Movie() {
                   <Heading
                     fontSize="24px"
                     borderBottom="2px solid red"
-                    pb="4px"
+                    pb="16px"
                   >
                     Trailers & More
                   </Heading>
@@ -231,10 +290,11 @@ export default function Movie() {
                   ></iframe>
                 </>
               )}
-              <Heading fontSize="24px" borderBottom="2px solid red" pb="4px">
+              <Heading fontSize="24px" borderBottom="2px solid red" pb="16px">
                 Movies like this
               </Heading>
-              <Stack
+              <Carousel movies={suggestedMoviesData.movies} />
+              {/* <Stack
                 direction="row"
                 flexWrap="wrap"
                 gap="24px"
@@ -254,7 +314,7 @@ export default function Movie() {
                     </Box>
                   )
                 )}
-              </Stack>
+              </Stack> */}
             </Stack>
           </Fade>
         </Stack>

@@ -63,6 +63,8 @@ const Profile = () => {
         fontSize="24px"
         mb="12px"
         mt="6rem"
+        borderBottom="2px solid red"
+        pb="16px"
       >
         Favourites
       </Heading>
@@ -79,6 +81,11 @@ const Profile = () => {
           </GridItem>
         ))}
       </Grid>
+      {movieIds?.length === 0 && (
+        <Text color="white" mt="24px" textAlign={'center'}>
+          No favourites yet!
+        </Text>
+      )}
     </Stack>
   )
 }

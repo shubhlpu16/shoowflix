@@ -15,16 +15,16 @@ export const getAuth = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   })
 
-  if (!user) {
-    return res.status(401).json({ error: 'Unauthorized' })
-  }
-
   return user
 }
 
 const postFavourite = async (req: NextApiRequest, res: NextApiResponse) => {
   const movieId = req.body.movieId as string
   const user = await getAuth(req, res)
+
+  if (!user) {
+    return res.status(401).json({ error: 'Unauthorized' })
+  }
 
   const featuredMovies = await prisma.userFeturedMovies.findUnique({
     where: {
@@ -68,6 +68,10 @@ const postFavourite = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const getFavourites = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuth(req, res)
+
+  if (!user) {
+    return res.status(401).json({ error: 'Unauthorized' })
+  }
 
   const featuredMovies = await prisma.userFeturedMovies.findUnique({
     where: {

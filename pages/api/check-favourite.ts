@@ -6,6 +6,10 @@ const checkFavourite = async (req: NextApiRequest, res: NextApiResponse) => {
   const movieId = req.query.movieId as string
   const user = await getAuth(req, res)
 
+  if (!user) {
+    return res.status(401).json({ error: 'Unauthorized' })
+  }
+
   const featuredMovies = await prisma.userFeturedMovies.findUnique({
     where: {
       userId: user?.id

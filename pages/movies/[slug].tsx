@@ -86,7 +86,8 @@ export default function Movie() {
         status: 'success',
         duration: 2000,
         isClosable: true,
-        position: 'top'
+        position: 'top',
+        colorScheme: 'red'
       })
       mutate({ isFavourite: true })
     } catch (error) {
@@ -95,7 +96,8 @@ export default function Movie() {
         status: 'error',
         duration: 2000,
         isClosable: true,
-        position: 'top'
+        position: 'top',
+        colorScheme: 'red'
       })
     }
   }
@@ -141,6 +143,7 @@ export default function Movie() {
                 border="6px solid white"
                 borderRadius="8px"
                 alt={slug as string}
+                fallbackSrc="https://via.placeholder.com/150"
                 loading="lazy"
               />
             </GridItem>

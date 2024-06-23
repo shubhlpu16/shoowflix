@@ -3,7 +3,6 @@ import {
   Avatar,
   Box,
   Button,
-  Fade,
   Flex,
   Grid,
   GridItem,

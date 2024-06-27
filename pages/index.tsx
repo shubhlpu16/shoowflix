@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Box, Button, Heading, Stack } from '@chakra-ui/react'
 import { SlideShow } from '@/components/slide-show'
 import { useMovies } from '@/data/use-movies'
@@ -7,8 +8,11 @@ import { getRandomMovies } from '@/utils/get-random-movies'
 import React from 'react'
 import { MoviesList } from '../components/movies-list'
 import { signIn } from 'next-auth/react'
+import { SWRConfig } from 'swr'
+import axios from 'axios'
 
-export default function Home() {
+export default function Home({ fallback }: any) {
+  console.log('🚀 ~ Home ~ fallback:', fallback)
   const { moviesData, isLoading } = useMovies({
     limit: 10
   })
@@ -41,6 +45,7 @@ export default function Home() {
   }
 
   return (
+    // <SWRConfig value={{ fallback }}>
     <Stack
       as="section"
       gap="12px"
@@ -50,7 +55,6 @@ export default function Home() {
       transform="translateY(-60px)"
     >
       <SlideShow movies={randMovies} />
-      <Button onClick={() => signIn()} colorScheme="blue" />
       <Stack direction="column" w="100%" h="100%" padding="16px">
         <Box>
           <Heading
@@ -68,5 +72,18 @@ export default function Home() {
         })}
       </Stack>
     </Stack>
+    // </SWRConfig>
   )
 }
+// export async function getStaticProps() {
+//   const { data: moviesData } = await axios.get(
+//     'https://yts.mx/api/v2/list_movies.json?limit=10'
+//   )
+//   return {
+//     props: {
+//       fallback: {
+//         '/api/v2/list_movies.json': moviesData.data
+//       }
+//     }
+//   }
+// }

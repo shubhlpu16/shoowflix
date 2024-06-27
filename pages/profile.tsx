@@ -18,7 +18,7 @@ import { Loader } from '../components/loader'
 const Profile = () => {
   const { data: session } = useSession()
   const { data: { movieIds } = {}, isLoading } = useSWR(
-    [`/api/favourite`],
+    [`/api/movies/favourites`],
     fetcher
   )
 

@@ -57,7 +57,7 @@ export default function Movie() {
   } = useMoviesDetails({ movie_id: movieId, with_cast: true }, isReady)
 
   const { data: { isFavourite } = {}, mutate } = useSWR(
-    [`/api/check-favourite?movieId=${movieId}`],
+    () => (movieId ? [`/api/movies/${movieId}/check-favourite`] : null),
     fetcher
   )
 
@@ -80,7 +80,7 @@ export default function Movie() {
         signIn()
         return
       }
-      await axios.post('/api/favourite', { movieId })
+      await axios.post(`/api/movies/${movieId}/favourite`)
       toast({
         title: isFavourite ? 'Removed from favourites' : 'Added to favourites',
         status: 'success',

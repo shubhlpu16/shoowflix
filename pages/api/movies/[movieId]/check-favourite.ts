@@ -1,10 +1,10 @@
-import { NextApiRequest, NextApiResponse } from 'next'
 import { db as prisma } from '@/lib/db'
-import { getAuth } from './favourite'
+import { auth } from '@/middlewares/auth'
+import { Request, Response } from '@/types'
 
-const checkFavourite = async (req: NextApiRequest, res: NextApiResponse) => {
+const checkFavourite = async (req: Request, res: Response) => {
   const movieId = req.query.movieId as string
-  const user = await getAuth(req, res)
+  const user = req.user
 
   if (!user) {
     return res.status(401).json({ error: 'Unauthorized' })
@@ -27,10 +27,14 @@ const checkFavourite = async (req: NextApiRequest, res: NextApiResponse) => {
   return res.status(200).json({ isFavourite: false })
 }
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: Request, res: Response) => {
   switch (req.method) {
     case 'GET':
-      await checkFavourite(req, res)
+      await auth(req, res, () => checkFavourite(req, res))
+      break
+    default:
+      res.status(405).end('Method Not Allowed')
+      break
   }
 }
 

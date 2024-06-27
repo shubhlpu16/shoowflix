@@ -47,6 +47,7 @@
     "react-star-ratings": "^2.3.0",
     "sass": "^1.77.5",
     "swiper": "^11.1.4",
+    "uuidv4": "^6.2.13",
     "video-react": "^0.16.0",
     "video.js": "^8.6.0"
   },

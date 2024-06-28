@@ -6,9 +6,9 @@ import {
   List,
   ListItem,
   Text,
-  useOutsideClick
+  useOutsideClick,
+  Image
 } from '@chakra-ui/react'
-import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
 import { BsSearch } from 'react-icons/bs'
@@ -112,7 +112,6 @@ export const Search = () => {
                     width={50}
                     height={80}
                     alt={movie.title}
-                    placeholder="blur"
                     loading="lazy"
                   />
                   <Text noOfLines={2}>{movie.title}</Text>

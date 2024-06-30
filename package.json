@@ -30,6 +30,7 @@
     "@vercel/speed-insights": "^1.0.12",
     "@webtor/player-sdk-js": "^0.2.15",
     "axios": "^1.7.2",
+    "date-fns": "^3.6.0",
     "eslint": "^8.50.0",
     "framer-motion": "^10.18.0",
     "magnet-uri": "^7.0.5",

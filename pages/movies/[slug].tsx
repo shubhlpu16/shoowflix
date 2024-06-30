@@ -36,6 +36,7 @@ import { fetcher } from '@/data/use-swr'
 import { MdFavorite, MdFavoriteBorder } from 'react-icons/md'
 import { signIn, useSession } from 'next-auth/react'
 import Carousel from '@/components/carousel'
+import { CommentsTree } from '@/components/comments-tree'
 
 export default function Movie() {
   const router = useRouter()
@@ -287,6 +288,10 @@ export default function Movie() {
               Movies like this
             </Heading>
             <Carousel movies={suggestedMoviesData.movies} />
+            <Heading fontSize="24px" borderBottom="2px solid red" pb="16px">
+              Comments
+            </Heading>
+            <CommentsTree movieId={movieId} />
             {/* <Stack
                 direction="row"
                 flexWrap="wrap"

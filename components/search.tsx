@@ -6,8 +6,8 @@ import {
   List,
   ListItem,
   Text,
-  useOutsideClick,
-  Image
+  Image,
+  useOutsideClick
 } from '@chakra-ui/react'
 import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
@@ -109,8 +109,8 @@ export const Search = () => {
                 >
                   <Image
                     src={movie.largeCoverImage}
-                    width={50}
-                    height={80}
+                    width="50px"
+                    height="80px"
                     alt={movie.title}
                     loading="lazy"
                   />

@@ -20,6 +20,7 @@ import { BsFillReplyFill } from 'react-icons/bs'
 import PostComment from '@/components/post-comment'
 import axios from 'axios'
 import Link from 'next/link'
+import { useEffect, useRef } from 'react'
 
 export interface CommentProps {
   comment: any
@@ -30,6 +31,17 @@ export interface CommentProps {
 
 export const Comment = ({ comment, mutateComments, movieId }: CommentProps) => {
   const [isReplying, setIsReplying] = useBoolean()
+  const replyRef = useRef<HTMLDivElement>()
+
+  useEffect(() => {
+    setIsReplying.off()
+  }, [comment, setIsReplying])
+
+  useEffect(() => {
+    if (replyRef.current) {
+      replyRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [isReplying])
 
   const handleClick = async (type: 'upVotes' | 'downVotes') => {
     const reqUrl = `/api/movies/${movieId}/comments?id=${comment.id}`
@@ -111,15 +123,18 @@ export const Comment = ({ comment, mutateComments, movieId }: CommentProps) => {
               </Text>
             </Flex>
           </HStack>
-          {isReplying && (
-            <PostComment
-              mutateComments={mutateComments}
-              placeholder="Add a reply"
-              movieId={movieId}
-              parentId={comment.id}
-              containerProps={{ m: '16px 0' }}
-            />
-          )}
+
+          <PostComment
+            mutateComments={mutateComments}
+            placeholder="Add a reply"
+            movieId={movieId}
+            parentId={comment.id}
+            containerProps={{
+              m: '16px 0',
+              display: isReplying ? 'flex' : 'none'
+            }}
+            ref={replyRef}
+          />
         </VStack>
       </Flex>
 

@@ -24,7 +24,7 @@ export const CommentsTree = ({ movieId }: CommentsTreeProps) => {
           placeholder="Add a comment"
           movieId={movieId}
           mutateComments={mutateComments}
-          inputProps={{ w: { base: '100%', lg: '500px' } }}
+          inputProps={{ w: { base: 'calc(100% - 48px)', lg: '500px' } }}
           containerProps={{ mb: '48px' }}
         />
       )}

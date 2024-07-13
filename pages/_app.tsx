@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   }
 
   const registerSW = async () => {
-    const registration = await navigator.serviceWorker.register('/sw.js')
+    const registration = await navigator.serviceWorker.register('/sw1.js')
     console.log('🚀 ~ registerSW ~ registration:', registration)
     return registration
   }
@@ -56,12 +56,12 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         <link rel="manifest" href="/manifest.json" />
         <meta name="description" content="An online movie streaming app" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" sizes="192x192" href="/maskable_iconx192.png" />
         <link
-          rel="icon"
+          rel="apple-touch-icon"
           sizes="192x192"
-          href="https://shoowflix.vercel.app/apple-touch-icon.png"
+          href="/maskable_iconx192.png"
         />
-        {/* <link rel="apple-touch-icon" sizes="192x192" href="/image.png" /> */}
       </Head>
 
       <Head>

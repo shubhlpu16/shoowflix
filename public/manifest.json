@@ -1,16 +1,26 @@
 {
-  "name": "Next PWA demo",
-  "short_name": "Next PWA",
+  "name": "Shoowflix",
+  "short_name": "Shoowflix",
+  "description": "Stream movies for free",
   "icons": [
     {
       "src": "/image.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "theme_color": "#FFFFFF",
   "background_color": "#FFFFFF",
   "start_url": "/",
   "display": "standalone",
-  "orientation": "portrait"
+  "screenshots": [
+    {
+      "src": "background.png",
+      "sizes": "1024x768",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "orientation": "any"
 }

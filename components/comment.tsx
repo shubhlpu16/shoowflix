@@ -128,7 +128,7 @@ export const Comment = ({ comment, mutateComments, movieId }: CommentProps) => {
             mutateComments={mutateComments}
             placeholder="Add a reply"
             movieId={movieId}
-            parentId={comment.id}
+            parentId={comment.parentId}
             containerProps={{
               m: '16px 0',
               display: isReplying ? 'flex' : 'none'

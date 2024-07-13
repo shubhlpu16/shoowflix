@@ -8,19 +8,62 @@ import { Navbar } from '@/components/navbar'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { SessionProvider } from 'next-auth/react'
+import { useEffect } from 'react'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+  const checkPermission = () => {
+    if (!('serviceWorker' in navigator)) {
+      throw new Error('No support for service worker!')
+    }
+
+    if (!('Notification' in window)) {
+      throw new Error('No support for notification API')
+    }
+
+    if (!('PushManager' in window)) {
+      throw new Error('No support for Push API')
+    }
+  }
+
+  const registerSW = async () => {
+    const registration = await navigator.serviceWorker.register('/sw.js')
+    console.log('🚀 ~ registerSW ~ registration:', registration)
+    return registration
+  }
+
+  const requestNotificationPermission = async () => {
+    const permission = await Notification.requestPermission()
+
+    if (permission !== 'granted') {
+      throw new Error('Notification permission not granted')
+    }
+  }
+
+  const main = async () => {
+    checkPermission()
+    await requestNotificationPermission()
+    await registerSW()
+  }
+
+  useEffect(() => {
+    main()
+  }, [])
+
   return (
     <>
       <Head>
         <title>Shoow: Stream Movies</title>
+        <link rel="manifest" href="/manifest.json" />
         <meta name="description" content="An online movie streaming app" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
           rel="icon"
+          sizes="192x192"
           href="https://shoowflix.vercel.app/apple-touch-icon.png"
         />
+        {/* <link rel="apple-touch-icon" sizes="192x192" href="/image.png" /> */}
       </Head>
+
       <Head>
         <title>Shoowflix - Stream Movies</title>
         <meta name="title" content="Shoowflix - Stream Movies" />

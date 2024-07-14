@@ -14,7 +14,7 @@ const urlBase64ToUint8Array = (base64String) => {
 }
 
 const saveSubscription = async (subscription) => {
-  const response = await fetch('http://localhost:3000/api/save-subscription', {
+  const response = await fetch('api/save-subscription', {
     method: 'post',
     headers: { 'Content-type': 'application/json' },
     body: JSON.stringify(subscription)

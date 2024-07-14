@@ -1,33 +1,31 @@
+// lib/socket.js
+
 import { Server } from 'socket.io'
 
-export const config = {
-  api: {
-    bodyParser: false
-  }
-}
+let io: any
 
-const ioHandler = (req: any, res: any) => {
-  if (!res.socket.server.io) {
-    console.log('Setting up Socket.IO server...')
-    const io = new Server(res.socket.server, {
-      path: '/api/socket'
+export const initializeSocket = (server: any) => {
+  if (!io) {
+    io = new Server(server, {
+      path: '/api/socket',
+      cors: {
+        origin: '*', // Adjust this to your needs
+        methods: ['GET', 'POST']
+      }
     })
-    res.socket.server.io = io
 
-    io.on('connection', (socket) => {
-      console.log('New client connected:', socket.id)
-      socket.on('join', (userId) => {
+    io.on('connection', (socket: any) => {
+      console.log('New client connected', socket.id)
+
+      socket.on('join', (userId: any) => {
         socket.join(userId)
+        console.log(`User ${userId} joined`)
       })
 
       socket.on('disconnect', () => {
-        console.log('Client disconnected:', socket.id)
+        console.log('Client disconnected', socket.id)
       })
     })
-  } else {
-    console.log('Socket.IO server already set up.')
   }
-  res.end()
+  return io
 }
-
-export default ioHandler

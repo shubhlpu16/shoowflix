@@ -9,9 +9,8 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { SessionProvider, getSession } from 'next-auth/react'
 import { useEffect } from 'react'
-// import { getSocket } from '@/lib/socket'
+import { getSocket } from '@/lib/socket'
 import axios from 'axios'
-import { io } from 'socket.io-client'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const checkPermission = () => {
@@ -58,9 +57,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   }, [])
 
   useEffect(() => {
-    const socket = io({
-      path: '/api/socket'
-    })
+    const socket = getSocket()
     socket.on('connect', async () => {
       console.log('Connected to server')
       const { user }: any = await getSession()

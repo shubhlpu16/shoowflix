@@ -6,12 +6,10 @@ export const config = {
   }
 }
 
-let io
-
 const ioHandler = (req: any, res: any) => {
   if (!res.socket.server.io) {
     console.log('Setting up Socket.IO server...')
-    io = new Server(res.socket.server, {
+    const io = new Server(res.socket.server, {
       path: '/api/socket'
     })
     res.socket.server.io = io

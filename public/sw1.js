@@ -36,5 +36,5 @@ self.addEventListener('activate', async () => {
 })
 
 self.addEventListener('push', (e) => {
-  self.registration.showNotification('Wohoo!!', { body: e.data.text() })
+  self.registration.showNotification('Shoowflix', { body: e.data.text() })
 })

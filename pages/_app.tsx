@@ -9,7 +9,7 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { SessionProvider, getSession } from 'next-auth/react'
 import { useEffect } from 'react'
-import { io } from 'socket.io-client'
+import socket from '@/lib/socket'
 import axios from 'axios'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
@@ -57,10 +57,6 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   }, [])
 
   useEffect(() => {
-    const socket = io({
-      path: '/api/socket'
-    })
-
     socket.on('connect', async () => {
       console.log('Connected to server')
       const { user }: any = await getSession()
@@ -68,6 +64,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     })
 
     socket.on('notification', async (notification) => {
+      console.log('🚀 ~ socket.on ~ notification:', notification)
       try {
         await axios.post('/api/send-notification', {
           message: notification.message
@@ -79,6 +76,8 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     })
 
     return () => {
+      socket.off('connect')
+      socket.off('notification')
       socket.disconnect()
     }
   }, [])

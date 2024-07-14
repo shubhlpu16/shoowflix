@@ -12,7 +12,6 @@ import { SWRConfig } from 'swr'
 import axios from 'axios'
 
 export default function Home({ fallback }: any) {
-  console.log('🚀 ~ Home ~ fallback:', fallback)
   const { moviesData, isLoading } = useMovies({
     limit: 10
   })

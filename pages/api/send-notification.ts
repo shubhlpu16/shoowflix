@@ -15,10 +15,10 @@ webpush.setVapidDetails(
 )
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'GET') {
+  if (req.method === 'POST') {
     if (subDatabase.length > 0) {
       webpush
-        .sendNotification(subDatabase[0], 'Hello world')
+        .sendNotification(subDatabase[0], req.body.message)
         .then(() => {
           res.status(200).send({
             status: 'Success',

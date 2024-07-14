@@ -38,22 +38,59 @@ const getComments = async (req: Request, res: Response) => {
 }
 
 const createComment = async (req: Request, res: Response) => {
-  const { movieId, id: parentId } = req.query
-  const { text, upVotes, downVotes } = req.body
-  const user = req.user
+  try {
+    const { movieId, id: parentId } = req.query
+    const { text, upVotes, downVotes } = req.body
+    const user = req.user
+    const mentions =
+      text
+        .match(/@[a-zA-Z0-9._-]+/g)
+        ?.map((mention: string | any[]) => mention.slice(1)) || []
+    const validUsers = await prisma.user.findMany({
+      where: { userName: { in: mentions } }
+    })
 
-  const comment = await prisma.comments.create({
-    data: {
-      text,
-      upVotes,
-      downVotes,
-      movieId: movieId as string,
-      parentId: parentId as string | null,
-      userId: user?.id
+    const comment = await prisma.comments.create({
+      data: {
+        text,
+        upVotes,
+        downVotes,
+        movieId: movieId as string,
+        parentId: parentId as string | null,
+        userId: user?.id
+      }
+    })
+
+    // Generate notifications
+    if (validUsers.length > 0) {
+      const notifications = validUsers.map((user) => ({
+        userId: user.id,
+        type: 'mention',
+        message: `You were mentioned in a comment by @${user.userName}`,
+        commentId: comment.id
+      }))
+
+      await prisma.notification.createMany({
+        data: notifications
+      })
+      //@ts-ignore
+      const io = res.socket.server.io
+      if (io) {
+        validUsers.forEach((user) => {
+          io.to(user.id).emit('notification', {
+            type: 'mention',
+            message: `You were mentioned in a comment by @${user.userName}`,
+            commentId: comment.id,
+            createdAt: new Date()
+          })
+        })
+      }
     }
-  })
 
-  res.status(201).json({ comment })
+    res.status(201).json({ comment })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
 }
 
 const updateComment = async (req: Request, res: Response) => {

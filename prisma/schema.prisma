@@ -17,6 +17,7 @@ model User {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
   email         String?   @unique
+  userName      String? @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
@@ -25,8 +26,10 @@ model User {
 
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
-  UserFeturedMovies UserFeturedMovies[]
-  Comments          Comments[]
+  userFeturedMovies UserFeturedMovies[]
+  comments          Comments[]
+  notifications     Notification[]
+  
 }
 
 model Account {
@@ -106,12 +109,30 @@ model Comments {
   downVotes     Int?           @default(0)
   movieId       String         @unique
   MovieComments MovieComments? @relation(fields: [movieId], references: [movieId])
-  parent        Comments?      @relation("CommentReplies", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  replies       Comments[]     @relation("CommentReplies")
 }
 
 model MovieComments {
   id       String     @id @default(auto()) @map("_id") @db.ObjectId
   movieId  String     @unique
   comments Comments[]
+}
+
+
+model Notification {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String    @db.ObjectId
+  user      User      @relation(fields: [userId], references: [id])
+  type      String
+  message   String
+  commentId String    @db.ObjectId
+  createdAt DateTime  @default(now())
+  seen      Boolean   @default(false)
+}
+
+model Subscription {
+  id        Int      @id  @map("_id")
+  endpoint  String
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
 }

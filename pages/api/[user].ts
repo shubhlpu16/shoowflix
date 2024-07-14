@@ -8,7 +8,7 @@ const getUser = async (req: NextApiRequest, res: NextApiResponse) => {
       id: user as string
     },
     include: {
-      UserFeturedMovies: true
+      userFeturedMovies: true
     }
   })
 

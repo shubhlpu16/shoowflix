@@ -40,7 +40,11 @@ const PostComment = forwardRef(
         const reqUrl = getQueryParams(`/api/movies/${movieId}/comments`, {
           id: parentId as string
         })
-        await axios.post(reqUrl, { text })
+        try {
+          await axios.post(reqUrl, { text })
+        } catch (error) {
+          console.log(error)
+        }
         mutateComments()
       }
     }

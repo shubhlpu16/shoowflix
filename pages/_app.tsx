@@ -7,8 +7,10 @@ import Head from 'next/head'
 import { Navbar } from '@/components/navbar'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
-import { SessionProvider } from 'next-auth/react'
+import { SessionProvider, getSession } from 'next-auth/react'
 import { useEffect } from 'react'
+import { io } from 'socket.io-client'
+import axios from 'axios'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const checkPermission = () => {
@@ -26,9 +28,14 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   }
 
   const registerSW = async () => {
-    const registration = await navigator.serviceWorker.register('/sw1.js')
-    console.log('🚀 ~ registerSW ~ registration:', registration)
-    return registration
+    await navigator.serviceWorker
+      .register('/sw1.js')
+      .then(() => {
+        console.log('Service worker registered')
+      })
+      .catch(() => {
+        console.log('Service worker registration failed')
+      })
   }
 
   const requestNotificationPermission = async () => {
@@ -49,6 +56,33 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     main()
   }, [])
 
+  useEffect(() => {
+    const socket = io({
+      path: '/api/socket'
+    })
+
+    socket.on('connect', async () => {
+      console.log('Connected to server')
+      const { user }: any = await getSession()
+      socket.emit('join', user?.id)
+    })
+
+    socket.on('notification', async (notification) => {
+      try {
+        await axios.post('/api/send-notification', {
+          message: notification.message
+        })
+      } catch (error) {
+        console.log(error)
+      }
+      // Handle the real-time notification, e.g., update the state or show a toast
+    })
+
+    return () => {
+      socket.disconnect()
+    }
+  }, [])
+
   return (
     <>
       <Head>
@@ -58,12 +92,12 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
           rel="icon"
-          href="https://shoowflix.vercel.app/maskable_iconx192.png"
+          href="https://shoowflix.vercel.app/maskable_icon_x192.png"
         />
         <link
           rel="apple-touch-icon"
           sizes="192x192"
-          href="https://shoowflix.vercel.app/maskable_iconx192.png"
+          href="https://shoowflix.vercel.app/maskable_icon_x192.png"
         />
       </Head>
 

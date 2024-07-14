@@ -3,6 +3,7 @@ const urlBase64ToUint8Array = (base64String) => {
   const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/')
 
   const rawData = atob(base64)
+  // eslint-disable-next-line no-undef
   const outputArray = new Uint8Array(rawData.length)
 
   for (let i = 0; i < rawData.length; ++i) {
@@ -22,7 +23,7 @@ const saveSubscription = async (subscription) => {
   return response.json()
 }
 
-self.addEventListener('activate', async (e) => {
+self.addEventListener('activate', async () => {
   const subscription = await self.registration.pushManager.subscribe({
     userVisibleOnly: true,
     applicationServerKey: urlBase64ToUint8Array(
@@ -35,6 +36,5 @@ self.addEventListener('activate', async (e) => {
 })
 
 self.addEventListener('push', (e) => {
-  console.log('🚀 ~ self.addEventListener ~ e.data:', e.data.text())
   self.registration.showNotification('Wohoo!!', { body: e.data.text() })
 })

@@ -9,7 +9,7 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { SessionProvider, getSession } from 'next-auth/react'
 import { useEffect } from 'react'
-import { getSocket } from '@/lib/socket'
+// import { getSocket } from '@/lib/socket'
 import axios from 'axios'
 import { io } from 'socket.io-client'
 

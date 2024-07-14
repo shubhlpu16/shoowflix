@@ -1,10 +1,17 @@
+// lib/socket.js
+
 import { io } from 'socket.io-client'
 
-const socket = io({
-  path: '/api/socket',
-  reconnectionAttempts: 5, // Limit the number of reconnection attempts
-  timeout: 10000, // Connection timeout (ms)
-  transports: ['websocket'] // Specify transport method
-})
+let socket: any
 
-export default socket
+export const getSocket = () => {
+  if (!socket) {
+    socket = io({
+      path: '/api/socket',
+      reconnectionAttempts: 5,
+      timeout: 10000,
+      transports: ['websocket']
+    })
+  }
+  return socket
+}

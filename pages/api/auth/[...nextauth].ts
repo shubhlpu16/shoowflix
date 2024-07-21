@@ -22,6 +22,10 @@ export const authOptions = {
     })
   ],
   callbacks: {
+    async redirect(url: string, baseUrl: string) {
+      // Ensures that only URLs within the base URL are allowed
+      return url.startsWith(baseUrl) ? url : baseUrl
+    },
     async session({ session, token }: any) {
       if (session) {
         session.user.id = token.id

@@ -22,10 +22,6 @@ export const authOptions = {
     })
   ],
   callbacks: {
-    async redirect(url: string, baseUrl: string) {
-      // Ensures that only URLs within the base URL are allowed
-      return url.startsWith(baseUrl) ? url : baseUrl
-    },
     async session({ session, token }: any) {
       if (session) {
         session.user.id = token.id
@@ -35,7 +31,6 @@ export const authOptions = {
     },
     async jwt({ token, user }: any) {
       if (user) {
-        console.log('🚀 ~ jwt ~ user:', user)
         token.userName = user.email.replace(/@[^@]+$/, '')
         token.id = user.id
       }

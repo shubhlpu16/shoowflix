@@ -7,78 +7,78 @@ import Head from 'next/head'
 import { Navbar } from '@/components/navbar'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
-import { SessionProvider, getSession } from 'next-auth/react'
-import { useEffect } from 'react'
-import { getSocket } from '@/lib/socket'
-import axios from 'axios'
+import { SessionProvider } from 'next-auth/react'
+// import { useEffect } from 'react'
+// import { getSocket } from '@/lib/socket'
+// import axios from 'axios'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
-  const checkPermission = () => {
-    if (!('serviceWorker' in navigator)) {
-      throw new Error('No support for service worker!')
-    }
+  // const checkPermission = () => {
+  //   if (!('serviceWorker' in navigator)) {
+  //     throw new Error('No support for service worker!')
+  //   }
 
-    if (!('Notification' in window)) {
-      throw new Error('No support for notification API')
-    }
+  //   if (!('Notification' in window)) {
+  //     throw new Error('No support for notification API')
+  //   }
 
-    if (!('PushManager' in window)) {
-      throw new Error('No support for Push API')
-    }
-  }
+  //   if (!('PushManager' in window)) {
+  //     throw new Error('No support for Push API')
+  //   }
+  // }
 
-  const registerSW = async () => {
-    await navigator.serviceWorker
-      .register('/sw1.js')
-      .then(() => {
-        console.log('Service worker registered')
-      })
-      .catch(() => {
-        console.log('Service worker registration failed')
-      })
-  }
+  // const registerSW = async () => {
+  //   await navigator.serviceWorker
+  //     .register('/sw1.js')
+  //     .then(() => {
+  //       console.log('Service worker registered')
+  //     })
+  //     .catch(() => {
+  //       console.log('Service worker registration failed')
+  //     })
+  // }
 
-  const requestNotificationPermission = async () => {
-    const permission = await Notification.requestPermission()
+  // const requestNotificationPermission = async () => {
+  //   const permission = await Notification.requestPermission()
 
-    if (permission !== 'granted') {
-      throw new Error('Notification permission not granted')
-    }
-  }
+  //   if (permission !== 'granted') {
+  //     throw new Error('Notification permission not granted')
+  //   }
+  // }
 
-  const main = async () => {
-    checkPermission()
-    await requestNotificationPermission()
-    await registerSW()
-  }
+  // const main = async () => {
+  //   checkPermission()
+  //   await requestNotificationPermission()
+  //   await registerSW()
+  // }
 
-  useEffect(() => {
-    main()
-  }, [])
+  // useEffect(() => {
+  //   main()
+  // }, [])
 
-  useEffect(() => {
-    const socket = getSocket()
-    socket.on('connect', async () => {
-      console.log('Connected to server')
-      const { user }: any = await getSession()
-      socket.emit('join', user?.id)
-    })
+  // useEffect(() => {
+  //   const socket = getSocket()
+  //   socket.on('connect', async () => {
+  //     console.log('Connected to server')
+  //     const { user }: any = await getSession()
+  //     socket.emit('join', user?.id)
+  //   })
 
-    socket.on('notification', async (notification: any) => {
-      try {
-        await axios.post('/api/send-notification', {
-          message: notification.message
-        })
-      } catch (error) {
-        console.log(error)
-      }
-      // Handle the real-time notification, e.g., update the state or show a toast
-    })
+  //   socket.on('notification', async (notification: any) => {
+  //     try {
+  //       await axios.post('/api/send-notification', {
+  //         message: notification.message
+  //       })
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //     // Handle the real-time notification, e.g., update the state or show a toast
+  //   })
 
-    return () => {
-      socket.disconnect()
-    }
-  }, [])
+  //   return () => {
+  //     socket.disconnect()
+  //   }
+  // }, [])
 
   return (
     <>

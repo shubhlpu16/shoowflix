@@ -3,11 +3,11 @@ import { ChakraProvider } from '@chakra-ui/react'
 
 import { theme } from '@/styles/theme'
 import '@/styles/globals.scss'
-import Head from 'next/head'
 import { Navbar } from '@/components/navbar'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { SessionProvider } from 'next-auth/react'
+import Head from 'next/head'
 // import { useEffect } from 'react'
 // import { getSocket } from '@/lib/socket'
 // import axios from 'axios'
@@ -96,17 +96,12 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
           sizes="192x192"
           href="https://shoowflix.vercel.app/maskable_icon_x192.png"
         />
-      </Head>
 
-      <Head>
-        <title>Shoowflix - Stream Movies</title>
         <meta name="title" content="Shoowflix - Stream Movies" />
         <meta
           name="description"
           content="Torrent streaming website without ads "
         />
-      </Head>
-      <Head>
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://shoowflix.vercel.app" />
         <meta property="og:title" content="Shoowflix - Stream Movies" />
@@ -118,8 +113,6 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
           property="og:image"
           content="https://shoowflix.vercel.app/background.png"
         />
-      </Head>
-      <Head>
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://shoowflix.vercel.app" />
         <meta property="twitter:title" content="Shoowflix - Stream Movies" />

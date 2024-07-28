@@ -39,6 +39,7 @@ import Carousel from '@/components/carousel'
 import { CommentsTree } from '@/components/comments-tree'
 import Head from 'next/head'
 import camelcaseKeys from 'camelcase-keys'
+import { generateMetaData } from '@/utils/generate-metadata'
 
 export default function Movie({ fallback }: any) {
   const router = useRouter()
@@ -109,27 +110,24 @@ export default function Movie({ fallback }: any) {
     return <Loader />
   }
 
+  const metaData: any = movie ? generateMetaData(movie) : {}
+
   return (
     <SWRConfig value={{ fallback }}>
       <Head>
-        <title key="title">{movie?.title} - Shoowflix</title>
+        <title>{metaData.title}</title>
+        <meta name="description" content={metaData.description} />
+        <meta name="keywords" content={metaData.keywords} />
+        <meta property="og:title" content={metaData.ogTitle} />
+        <meta property="og:description" content={metaData.ogDescription} />
+        <meta property="og:image" content={metaData.ogImage} />
+        <meta name="twitter:card" content={metaData.twitterCard} />
+        <meta name="twitter:title" content={metaData.twitterTitle} />
         <meta
-          name="description"
-          content={movie?.descriptionFull}
-          key="description"
+          name="twitter:description"
+          content={metaData.twitterDescription}
         />
-        <meta
-          name="keywords"
-          content={movie?.genres.join(', ')}
-          key="keywords"
-        />
-        <meta property="og:image" content={movie?.largeCoverImage} />
-        <meta property="og:title" content={movie?.title} />
-        <meta property="og:description" content={movie?.descriptionFull} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={movie?.title} />
-        <meta name="twitter:description" content={movie?.descriptionFull} />
-        <meta name="twitter:image" content={movie?.largeCoverImage} />
+        <meta name="twitter:image" content={metaData.twitterImage} />
       </Head>
       <Box
         backgroundImage={movie?.backgroundImage}
@@ -322,7 +320,7 @@ export default function Movie({ fallback }: any) {
               <Heading fontSize="24px" borderBottom="2px solid red" pb="16px">
                 Comments
               </Heading>
-              {movieId && <CommentsTree movieId={movieId} />}
+              {movieId && !isLoading && <CommentsTree movieId={movieId} />}
               {/* <Stack
                 direction="row"
                 flexWrap="wrap"
@@ -374,14 +372,15 @@ export const getServerSideProps = async (context: any) => {
     return {
       props: {
         fallback: {
-          'v2/movie_details.json?movie_id=${movieId}&with_cast=true':
-            camelcaseKeys(movie, { deep: true })
+          'v2/movie_details.json': camelcaseKeys(movie, { deep: true })
         }
       }
     }
   } catch (error) {
     return {
-      props: {}
+      props: {
+        fallback: {}
+      }
     }
   }
 }

@@ -6,7 +6,7 @@ let socket: Socket | undefined
 
 export const getSocket = (): Socket => {
   if (!socket) {
-    socket = io('http://localhost:3001', {
+    socket = io('https://movies-production-61af.up.railway.app', {
       timeout: 10000,
       transports: ['websocket'],
       reconnectionAttempts: Infinity, // Number of reconnection attempts

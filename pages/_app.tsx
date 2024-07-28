@@ -65,6 +65,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     const initializeSocket = async () => {
       const session = await getSession()
       user = session?.user || {}
+      console.log('Connected')
       socket.emit('join', user?.id)
     }
 

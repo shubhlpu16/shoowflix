@@ -7,10 +7,6 @@ import { Loader } from '@/components/loader'
 import { getRandomMovies } from '@/utils/get-random-movies'
 import React from 'react'
 import { MoviesList } from '../components/movies-list'
-import { signIn } from 'next-auth/react'
-import { SWRConfig } from 'swr'
-import axios from 'axios'
-import Head from 'next/head'
 
 export default function Home({ fallback }: any) {
   const { moviesData, isLoading } = useMovies({
@@ -47,35 +43,6 @@ export default function Home({ fallback }: any) {
   return (
     // <SWRConfig value={{ fallback }}>
     <>
-      <Head>
-        <meta name="title" content="Shoowflix - Stream Movies" />
-        <meta
-          name="description"
-          content="Torrent streaming website without ads "
-        />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://shoowflix.vercel.app" />
-        <meta property="og:title" content="Shoowflix - Stream Movies" />
-        <meta
-          property="og:description"
-          content="Torrent streaming website without ads "
-        />
-        <meta
-          property="og:image"
-          content="https://shoowflix.vercel.app/background.png"
-        />
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://shoowflix.vercel.app" />
-        <meta property="twitter:title" content="Shoowflix - Stream Movies" />
-        <meta
-          property="twitter:description"
-          content="Torrent streaming website without ads "
-        />
-        <meta
-          property="twitter:image"
-          content="https://shoowflix.vercel.app/background.png"
-        />
-      </Head>
       <Stack
         as="section"
         gap="12px"

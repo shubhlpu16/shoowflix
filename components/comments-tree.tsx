@@ -1,6 +1,6 @@
 import React from 'react'
-import useSWR from 'swr'
 import { fetcher } from '@/data/use-swr'
+import useSWR from 'swr'
 import { Stack, VStack, Text, Button } from '@chakra-ui/react'
 import { Comment } from '@/components/comment'
 import PostComment from '@/components/post-comment'
@@ -11,11 +11,12 @@ interface CommentsTreeProps {
 }
 
 export const CommentsTree = ({ movieId }: CommentsTreeProps) => {
-  const { data: { comments } = {}, mutate: mutateComments } = useSWR(
+  const { data, mutate: mutateComments } = useSWR(
     () => (movieId ? [`/api/movies/${movieId}/comments`] : null),
     fetcher
   )
   const { data: session } = useSession()
+  const comments = data?.comments || {}
 
   return (
     <Stack direction="column" spacing="12px">

@@ -14,16 +14,19 @@ const urlBase64ToUint8Array = (base64String) => {
 }
 
 const saveSubscription = async (subscription) => {
-  const response = await fetch('/api/save-subscription', {
-    method: 'post',
-    headers: { 'Content-type': 'application/json' },
-    body: JSON.stringify(subscription)
-  })
+  const response = await fetch(
+    'https://movies-production-61af.up.railway.app/api/save-subscription',
+    {
+      method: 'post',
+      headers: { 'Content-type': 'application/json' },
+      body: JSON.stringify(subscription)
+    }
+  )
 
   return response.json()
 }
 
-self.addEventListener('activate', async () => {
+const subscribeUser = async () => {
   const subscription = await self.registration.pushManager.subscribe({
     userVisibleOnly: true,
     applicationServerKey: urlBase64ToUint8Array(
@@ -31,10 +34,14 @@ self.addEventListener('activate', async () => {
     )
   })
 
-  const response = await saveSubscription(subscription)
-  console.log(response)
+  await saveSubscription(subscription)
+}
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(subscribeUser())
 })
 
 self.addEventListener('push', (e) => {
   self.registration.showNotification('Shoowflix', { body: e.data.text() })
+  subscribeUser()
 })

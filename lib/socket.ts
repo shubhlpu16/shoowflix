@@ -1,16 +1,18 @@
 // lib/socket.js
 
-import { io } from 'socket.io-client'
+import { io, Socket } from 'socket.io-client'
 
-let socket: any
+let socket: Socket | undefined
 
-export const getSocket = () => {
+export const getSocket = (): Socket => {
   if (!socket) {
-    socket = io({
-      path: '/api/socket',
-      reconnectionAttempts: 5,
+    socket = io('http://localhost:3001', {
       timeout: 10000,
-      transports: ['websocket']
+      transports: ['websocket'],
+      reconnectionAttempts: Infinity, // Number of reconnection attempts
+      reconnectionDelay: 1000, // Delay between reconnection attempts in ms
+      reconnectionDelayMax: 5000, // Maximum delay between reconnections in ms
+      randomizationFactor: 0.5 // Randomization factor between reconnections
     })
   }
   return socket

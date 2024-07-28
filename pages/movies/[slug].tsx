@@ -123,33 +123,13 @@ export default function Movie({ fallback }: any) {
           content={movie?.genres.join(', ')}
           key="keywords"
         />
-        <meta
-          property="og:image"
-          content={movie?.largeCoverImage}
-          key="og:image"
-        />
-        <meta property="og:title" content={movie?.title} key="og:title" />
-        <meta
-          property="og:description"
-          content={movie?.descriptionFull}
-          key="og:description"
-        />
-        <meta
-          name="twitter:card"
-          content="summary_large_image"
-          key="twitter:card"
-        />
-        <meta name="twitter:title" content={movie?.title} key="twitter:title" />
-        <meta
-          name="twitter:description"
-          content={movie?.descriptionFull}
-          key="twitter:description"
-        />
-        <meta
-          name="twitter:image"
-          content={movie?.largeCoverImage}
-          key="twitter:image"
-        />
+        <meta property="og:image" content={movie?.largeCoverImage} />
+        <meta property="og:title" content={movie?.title} />
+        <meta property="og:description" content={movie?.descriptionFull} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={movie?.title} />
+        <meta name="twitter:description" content={movie?.descriptionFull} />
+        <meta name="twitter:image" content={movie?.largeCoverImage} />
       </Head>
       <Box
         backgroundImage={movie?.backgroundImage}

@@ -112,34 +112,6 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
           sizes="192x192"
           href="https://shoowflix.vercel.app/maskable_icon_x192.png"
         />
-
-        <meta name="title" content="Shoowflix - Stream Movies" />
-        <meta
-          name="description"
-          content="Torrent streaming website without ads "
-        />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://shoowflix.vercel.app" />
-        <meta property="og:title" content="Shoowflix - Stream Movies" />
-        <meta
-          property="og:description"
-          content="Torrent streaming website without ads "
-        />
-        <meta
-          property="og:image"
-          content="https://shoowflix.vercel.app/background.png"
-        />
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://shoowflix.vercel.app" />
-        <meta property="twitter:title" content="Shoowflix - Stream Movies" />
-        <meta
-          property="twitter:description"
-          content="Torrent streaming website without ads "
-        />
-        <meta
-          property="twitter:image"
-          content="https://shoowflix.vercel.app/background.png"
-        />
       </Head>
       <SessionProvider session={session}>
         <ChakraProvider theme={theme}>

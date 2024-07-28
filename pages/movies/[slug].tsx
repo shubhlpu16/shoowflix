@@ -31,15 +31,16 @@ import { useResponsive } from '@/hooks/useResponsive'
 // import { MovieCard } from '@/components/movie-card'
 import { play } from '@/utils/play'
 import axios from 'axios'
-import useSWR from 'swr'
+import useSWR, { SWRConfig } from 'swr'
 import { fetcher } from '@/data/use-swr'
 import { MdFavorite, MdFavoriteBorder } from 'react-icons/md'
 import { signIn, useSession } from 'next-auth/react'
 import Carousel from '@/components/carousel'
 import { CommentsTree } from '@/components/comments-tree'
 import Head from 'next/head'
+import camelcaseKeys from 'camelcase-keys'
 
-export default function Movie() {
+export default function Movie({ fallback }: any) {
   const router = useRouter()
   const { isMobile } = useResponsive()
   const {
@@ -109,7 +110,7 @@ export default function Movie() {
   }
 
   return (
-    <>
+    <SWRConfig value={{ fallback }}>
       <Head>
         <title key="title">{movie?.title} - Shoowflix</title>
         <meta
@@ -122,33 +123,13 @@ export default function Movie() {
           content={movie?.genres.join(', ')}
           key="keywords"
         />
-        <meta
-          property="og:image"
-          content={movie?.largeCoverImage}
-          key="og:image"
-        />
-        <meta property="og:title" content={movie?.title} key="og:title" />
-        <meta
-          property="og:description"
-          content={movie?.descriptionFull}
-          key="og:description"
-        />
-        <meta
-          name="twitter:card"
-          content="summary_large_image"
-          key="twitter:card"
-        />
-        <meta name="twitter:title" content={movie?.title} key="twitter:title" />
-        <meta
-          name="twitter:description"
-          content={movie?.descriptionFull}
-          key="twitter:description"
-        />
-        <meta
-          name="twitter:image"
-          content={movie?.largeCoverImage}
-          key="twitter:image"
-        />
+        <meta property="og:image" content={movie?.largeCoverImage} />
+        <meta property="og:title" content={movie?.title} />
+        <meta property="og:description" content={movie?.descriptionFull} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={movie?.title} />
+        <meta name="twitter:description" content={movie?.descriptionFull} />
+        <meta name="twitter:image" content={movie?.largeCoverImage} />
       </Head>
       <Box
         backgroundImage={movie?.backgroundImage}
@@ -341,7 +322,7 @@ export default function Movie() {
               <Heading fontSize="24px" borderBottom="2px solid red" pb="16px">
                 Comments
               </Heading>
-              <CommentsTree movieId={movieId} />
+              {movieId && <CommentsTree movieId={movieId} />}
               {/* <Stack
                 direction="row"
                 flexWrap="wrap"
@@ -376,6 +357,31 @@ export default function Movie() {
           </ModalContent>
         </Modal>
       </Box>
-    </>
+    </SWRConfig>
   )
+}
+
+export const getServerSideProps = async (context: any) => {
+  const { params } = context
+  const { slug } = params
+  const movieId = slug?.split('-').slice(-1)[0]
+  try {
+    const res = await axios.get(
+      `https://yts.mx/api/v2/movie_details.json?movie_id=${movieId}&with_cast=true`
+    )
+    const { data } = res
+    const { movie } = data.data || {}
+    return {
+      props: {
+        fallback: {
+          'v2/movie_details.json?movie_id=${movieId}&with_cast=true':
+            camelcaseKeys(movie, { deep: true })
+        }
+      }
+    }
+  } catch (error) {
+    return {
+      props: {}
+    }
+  }
 }

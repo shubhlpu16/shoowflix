@@ -42,6 +42,6 @@ self.addEventListener('activate', (event) => {
 })
 
 self.addEventListener('push', (e) => {
+  console.log('🚀 ~ self.addEventListener ~ e:', e)
   self.registration.showNotification('Shoowflix', { body: e.data.text() })
-  subscribeUser()
 })

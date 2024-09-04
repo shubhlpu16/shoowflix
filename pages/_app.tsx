@@ -6,7 +6,7 @@ import '@/styles/globals.scss'
 import { Navbar } from '@/components/navbar'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
-import { SessionProvider, getSession, useSession } from 'next-auth/react'
+import { SessionProvider, useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import axios from 'axios'
 import { getSocket } from '@/lib/socket'
@@ -62,7 +62,7 @@ const UserSession = () => {
 
       if (!userSession?.data?.user) return
 
-      const user = userSession.data.user
+      const user = userSession.data.user as any
 
       navigator.serviceWorker.controller?.postMessage({
         type: 'INITIALIZE_SOCKET',

@@ -13,20 +13,25 @@ const urlBase64ToUint8Array = (base64String) => {
   return outputArray
 }
 
-const saveSubscription = async (subscription) => {
+const saveSubscription = async (subscription, userId) => {
+  const data = {
+    subscription: subscription,
+    userId
+  }
+  console.log('🚀 ~ saveSubscription ~ subscription:', subscription)
   const response = await fetch(
     'https://movies-production-61af.up.railway.app/api/save-subscription',
     {
       method: 'post',
       headers: { 'Content-type': 'application/json' },
-      body: JSON.stringify(subscription)
+      body: JSON.stringify(data)
     }
   )
 
   return response.json()
 }
 
-const subscribeUser = async () => {
+const subscribeUser = async (userId) => {
   const subscription = await self.registration.pushManager.subscribe({
     userVisibleOnly: true,
     applicationServerKey: urlBase64ToUint8Array(
@@ -34,11 +39,21 @@ const subscribeUser = async () => {
     )
   })
 
-  await saveSubscription(subscription)
+  await saveSubscription(subscription, userId)
 }
 
-self.addEventListener('activate', (event) => {
-  event.waitUntil(subscribeUser())
+// self.addEventListener('activate', (event) => {
+//   event.waitUntil(subscribeUser())
+// })
+
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'INITIALIZE_SOCKET') {
+    const { userId } = event.data.payload
+    console.log('Condition met for user:', userId)
+
+    // Perform actions based on the condition
+    event.waitUntil(subscribeUser(userId))
+  }
 })
 
 self.addEventListener('push', (e) => {

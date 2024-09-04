@@ -63,8 +63,8 @@ const createComment = async (req: Request, res: Response) => {
     })
 
     if (validUsers.length > 0) {
-      const notifications = validUsers.map((user) => ({
-        userId: user.id,
+      const notifications = validUsers.map((user1) => ({
+        userId: user1.id,
         type: 'mention',
         message: `You were mentioned in a comment by @${user.userName}`,
         commentId: comment.id
@@ -76,7 +76,8 @@ const createComment = async (req: Request, res: Response) => {
       //@ts-ignore
       getSocket().emit('sendNotification', {
         validUsers,
-        commentId: comment.id
+        commentId: comment.id,
+        sender: user
       })
     }
 

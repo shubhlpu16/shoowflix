@@ -73,6 +73,7 @@ const createComment = async (req: Request, res: Response) => {
       await prisma.notification.createMany({
         data: notifications
       })
+
       //@ts-ignore
       getSocket().emit('sendNotification', {
         validUsers,

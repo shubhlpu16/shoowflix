@@ -41,7 +41,15 @@ const PostComment = forwardRef(
           id: parentId as string
         })
         try {
-          await axios.post(reqUrl, { text })
+          //@ts-ignore
+          const response = await axios.post(reqUrl, { text })
+          const { comment, validUsers } = response.data
+          //Emit Notifications from WebPush API Subscription
+          await axios.post('/api/emit-notification', {
+            validUsers,
+            commentId: comment.id,
+            sender: session.user
+          })
         } catch (error) {
           console.log(error)
         }

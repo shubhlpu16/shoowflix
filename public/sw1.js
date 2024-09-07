@@ -18,20 +18,17 @@ const saveSubscription = async (subscription, userId) => {
     subscription: subscription,
     userId
   }
-  console.log('🚀 ~ saveSubscription ~ subscription:', subscription)
-  const response = await fetch(
-    'https://movies-production-61af.up.railway.app/api/save-subscription',
-    {
-      method: 'post',
-      headers: { 'Content-type': 'application/json' },
-      body: JSON.stringify(data)
-    }
-  )
+  const response = await fetch('/api/save-subscription', {
+    method: 'post',
+    headers: { 'Content-type': 'application/json' },
+    body: JSON.stringify(data)
+  })
 
   return response.json()
 }
 
 const subscribeUser = async (userId) => {
+  console.log("🚀 ~ subscribeUser ~ userId:", userId)
   const subscription = await self.registration.pushManager.subscribe({
     userVisibleOnly: true,
     applicationServerKey: urlBase64ToUint8Array(
@@ -57,6 +54,5 @@ self.addEventListener('message', (event) => {
 })
 
 self.addEventListener('push', (e) => {
-  console.log('🚀 ~ self.addEventListener ~ e:', e)
   self.registration.showNotification('Shoowflix', { body: e.data.text() })
 })

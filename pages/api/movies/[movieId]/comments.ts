@@ -1,8 +1,8 @@
 import { db as prisma } from '@/lib/db'
-import { getSocket } from '@/lib/socket'
+// import { getSocket } from '@/lib/socket'
 import { auth } from '@/middlewares/auth'
 import { Request, Response } from '@/types'
-import axios from 'axios'
+// import axios from 'axios'
 
 const buildCommentTree = (comments: any[], parentId = null) => {
   const nestedComments: any[] = []

@@ -17,6 +17,7 @@ const useSSE = () => {
       try {
         await axios.post('/api/send-notification', {
           message: data.message,
+          //@ts-ignore
           userId: userSession.data?.user?.id
         })
       } catch (error) {

@@ -16,7 +16,8 @@ webpush.setVapidDetails(
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    const { validUsers, commentId, sender } = req.body
+    // const { validUsers, commentId, sender } = req.body
+    const { validUsers, sender } = req.body
 
     // const cts = clients.getClients()
     // validUsers.forEach((user) => {
@@ -34,9 +35,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
     const db = subDatabase.getDatabase()
 
-    console.log(db);
+    console.log('db', db)
 
-    validUsers.forEach((user) => {
+    validUsers.forEach((user: any) => {
       if (db[user?.id]) {
         webpush
           .sendNotification(

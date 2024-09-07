@@ -29,6 +29,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     }
 
     const cts = clients.getClients()
+    //@ts-ignore
     cts[userId] = newClient
     res.write(`data: "Started"\n\n`)
 

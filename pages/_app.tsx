@@ -73,7 +73,7 @@ const UserSession = () => {
 
   useEffect(() => {
     main()
-  }, [])
+  })
 
   // useEffect(() => {
   //   const socket = getSocket()

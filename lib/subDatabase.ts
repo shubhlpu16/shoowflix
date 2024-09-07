@@ -1,4 +1,7 @@
 class SubDatabase {
+  static instance: any
+  subDatabase: any
+
   constructor() {
     if (!SubDatabase.instance) {
       this.subDatabase = {} as any
@@ -12,7 +15,7 @@ class SubDatabase {
     return this.subDatabase
   }
 
-  setDatabase(newDatabase) {
+  setDatabase(newDatabase: any) {
     this.subDatabase = newDatabase
   }
 

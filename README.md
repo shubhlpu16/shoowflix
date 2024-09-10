@@ -76,6 +76,7 @@ Shoowflix is licensed under the MIT License. See LICENSE for more information.
 
 For any inquiries or issues, please contact us at shubh.lpu16@gmail.com
 
+
 ### For Setting up Mongo on Docker we need replicaSet setup.
 
 Run Command: docker compose up
@@ -83,3 +84,21 @@ then: npx prisma db push
 
 Use below url:
 DATABASE_URL=mongodb://localhost:27017/showflix?replicaSet=rs0&retryWrites=true&w=majority&directConnection=true
+=======
+
+###
+Service Workers are scripts that your browser runs in the background, separate from a web page. 
+Sits between your web app on browser and network.(Acts as proxy servers)
+They enable features that don’t need a web page or user interaction, like push notifications and background sync.
+
+Web Push is a technology that allows servers to send messages to web applications, even when the web app is not open in the browser. (Sends via SW)
+
+Web push notifications rely on active service workers to function.
+
+How Web Push Works with Active Service Workers?
+1. User Subscription: The user subscribes to push notifications through the browser.
+2. Subscription Information: The browser sends the subscription information to the server.
+3. Push Message and Push Service: When the server has a message to send, it sends the push message via push service and push service delivers the message to the browser.
+4. Service Worker Activation: The browser wakes up the service worker to handle the incoming push message.
+5. Notification Display: The service worker processes the message and displays a notification to the user.
+

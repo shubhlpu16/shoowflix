@@ -1,7 +1,8 @@
 import { db as prisma } from '@/lib/db'
-import { getSocket } from '@/lib/socket'
+// import { getSocket } from '@/lib/socket'
 import { auth } from '@/middlewares/auth'
 import { Request, Response } from '@/types'
+// import axios from 'axios'
 
 const buildCommentTree = (comments: any[], parentId = null) => {
   const nestedComments: any[] = []
@@ -74,15 +75,41 @@ const createComment = async (req: Request, res: Response) => {
         data: notifications
       })
 
-      //@ts-ignore
-      getSocket().emit('sendNotification', {
-        validUsers,
-        commentId: comment.id,
-        sender: user
-      })
+      // //@ts-ignore
+      // getSocket().emit('sendNotification', {
+      //   validUsers,
+      //   commentId: comment.id,
+      //   sender: user
+      // })
+
+      // try {
+      //   await axios.post('/api/events', {
+      //     validUsers,
+      //     commentId: comment.id,
+      //     sender: user
+      //   })
+      // } catch (error) {
+      //   console.log(error)
+      // }
+
+      // try {
+      //   await fetch('/api/events', {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json'
+      //     },
+      //     body: JSON.stringify({
+      //       validUsers,
+      //       commentId: comment.id,
+      //       sender: user
+      //     })
+      //   })
+      // } catch (error) {
+      //   console.log(error)
+      // }
     }
 
-    res.status(201).json({ comment })
+    res.status(201).json({ comment, validUsers })
   } catch (error) {
     console.error(error)
   }

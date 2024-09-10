@@ -32,6 +32,7 @@
     "axios": "^1.7.2",
     "date-fns": "^3.6.0",
     "eslint": "^8.50.0",
+    "event-source-polyfill": "^1.0.31",
     "framer-motion": "^10.18.0",
     "magnet-uri": "^7.0.5",
     "mongodb": "^6.7.0",

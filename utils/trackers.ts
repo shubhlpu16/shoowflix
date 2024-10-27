@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 export const trackers = [
   'udp://open.demonii.com:1337/announce',
   'udp://tracker.openbittorrent.com:80',
@@ -145,3 +147,11 @@ export const trackers = [
   // 'udp://explodie.org:6969/announce',
   // 'udp://mgtracker.org:2710/announce'
 ]
+
+export const getTrackers = async () => {
+  const { data } = await axios.get('/api/trackers')
+  return [
+    ...data.map(({ tracker }: { tracker: string }) => tracker),
+    ...trackers
+  ]
+}

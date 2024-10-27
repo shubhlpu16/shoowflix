@@ -136,3 +136,8 @@ model Subscription {
   auth      String
   createdAt DateTime @default(now())
 }
+
+model Tracker {
+  id       String      @id @default(auto()) @map("_id") @db.ObjectId
+  tracker String
+}

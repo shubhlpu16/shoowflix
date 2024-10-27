@@ -164,11 +164,6 @@ img {
   }
 }
 
-iframe:has(.hide) {
-  display: none;
-  height: 0 !important;
-}
-
 #player {
   width: 100%;
   height: 400px;
@@ -178,14 +173,4 @@ iframe:has(.hide) {
   display: flex;
   align-items: center;
   justify-content: center;
-
-  .placeholder {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    border: 2px solid white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
 }

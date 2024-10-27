@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle } from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle } from 'react'
 // import { BsFillPlayFill } from 'react-icons/bs'
 // import { Stack } from '@chakra-ui/react'
 import { play } from '@/utils/play'
@@ -10,14 +10,5 @@ export const WebtorPlayer = forwardRef((_props, ref) => {
     }
   }))
 
-  return (
-    <div id="player" className="webtor">
-      {/* <Stack direction="column" spacing={8} alignItems="center">
-        <div className="placeholder">
-          <BsFillPlayFill className="icon" />
-        </div>
-        <p>Select resolution to start streaming</p>
-      </Stack> */}
-    </div>
-  )
+  return <div id="player" className="webtor"></div>
 })

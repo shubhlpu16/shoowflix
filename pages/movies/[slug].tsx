@@ -113,7 +113,9 @@ export default function Movie({ fallback }: any) {
   const metaData: any = movie ? generateMetaData(movie) : {}
 
   return (
-    <SWRConfig value={{ fallback }}>
+    // <SWRConfig value={{ fallback }}>
+    <>
+      {' '}
       <Head>
         <title>{metaData.title}</title>
         <meta name="description" content={metaData.description} />
@@ -347,7 +349,11 @@ export default function Movie({ fallback }: any) {
         </Box>
         <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
           <ModalOverlay />
-          <ModalContent w="100%" maxW={{ base: '90%', xl: '50%' }} minH="300px">
+          <ModalContent
+            w="100%"
+            maxW={{ base: '90%', xl: '768px' }}
+            minH="321px"
+          >
             <ModalCloseButton zIndex={2} />
             <ModalBody pt="24px" h="100%" background={'black'}>
               <WebtorPlayer ref={playerRef} />
@@ -355,32 +361,33 @@ export default function Movie({ fallback }: any) {
           </ModalContent>
         </Modal>
       </Box>
-    </SWRConfig>
+      {/* </SWRConfig> */}
+    </>
   )
 }
 
-export const getServerSideProps = async (context: any) => {
-  const { params } = context
-  const { slug } = params
-  const movieId = slug?.split('-').slice(-1)[0]
-  try {
-    const res = await axios.get(
-      `https://yts.mx/api/v2/movie_details.json?movie_id=${movieId}&with_cast=true`
-    )
-    const { data } = res
-    const { movie } = data.data || {}
-    return {
-      props: {
-        fallback: {
-          'v2/movie_details.json': camelcaseKeys(movie, { deep: true })
-        }
-      }
-    }
-  } catch (error) {
-    return {
-      props: {
-        fallback: {}
-      }
-    }
-  }
-}
+// export const getServerSideProps = async (context: any) => {
+//   const { params } = context
+//   const { slug } = params
+//   const movieId = slug?.split('-').slice(-1)[0]
+//   try {
+//     const res = await axios.get(
+//       `https://yts.mx/api/v2/movie_details.json?movie_id=${movieId}&with_cast=true`
+//     )
+//     const { data } = res
+//     const { movie } = data.data || {}
+//     return {
+//       props: {
+//         fallback: {
+//           'v2/movie_details.json': camelcaseKeys(movie, { deep: true })
+//         }
+//       }
+//     }
+//   } catch (error) {
+//     return {
+//       props: {
+//         fallback: {}
+//       }
+//     }
+//   }
+// }

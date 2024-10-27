@@ -1,7 +1,8 @@
-import { trackers } from './trackers'
+import { getTrackers } from './trackers'
 
-export const getMagnetURI = (hash: string, url: string) => {
+export const getMagnetURI = async (hash: string, url: string) => {
   try {
+    const trackers = await getTrackers()
     const uri = `magnet:?xt=urn:btih:${hash}`
     const encodedTrackers = trackers
       .map((tracker) => `tr=${encodeURIComponent(tracker)}`)

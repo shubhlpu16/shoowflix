@@ -14,15 +14,17 @@ export const play = (
       id: 'player',
       className: 'player',
       magnet: getMagnetURI(hash, url),
-      width: '100%',
-      height: '400px',
       imdmbid: imdbId,
+      controls: true,
       poster,
       features: {
-        download: true,
+        autoSubtitles: true,
+        title: false,
+        p2pProgress: true,
+        subtitles: true,
         fullscreen: true,
-        settings: false,
-        chromecast: true
+        chromecast: true,
+        embed: false
       },
       on: function (e: any) {
         if (e.name == window.webtor.INITED) {

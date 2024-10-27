@@ -3,6 +3,7 @@ import NextAuth from 'next-auth'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import GoogleProvider from 'next-auth/providers/google'
 import GithubProvider from 'next-auth/providers/github'
+import CredentialsProvider from 'next-auth/providers/credentials'
 import { db as prisma } from '@/lib/db'
 
 export const authOptions = {
@@ -15,11 +16,11 @@ export const authOptions = {
       httpOptions: {
         timeout: 40000
       }
-    }),
-    GithubProvider({
-      clientId: process.env.GITHUB_CLIENT_ID as string,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET as string
     })
+    // GithubProvider({
+    //   clientId: process.env.GITHUB_CLIENT_ID as string,
+    //   clientSecret: process.env.GITHUB_CLIENT_SECRET as string
+    // })
   ],
   callbacks: {
     async session({ session, token }: any) {

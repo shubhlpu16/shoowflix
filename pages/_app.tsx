@@ -9,6 +9,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 import { SessionProvider, useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import Head from 'next/head'
+import Trackers from '@/utils/trackers'
 // import useSSE from '@/hooks/use-sse'
 // import { useSession } from 'next-auth/client'
 
@@ -54,6 +55,7 @@ const UserSession = () => {
     checkPermission()
     await requestNotificationPermission()
     await registerSW()
+    Trackers.loadTrackers()
   }
 
   useEffect(() => {

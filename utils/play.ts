@@ -15,16 +15,12 @@ export const play = (
       className: 'player',
       magnet: getMagnetURI(hash, url),
       imdmbid: imdbId,
-      controls: true,
       poster,
       features: {
-        autoSubtitles: true,
-        title: false,
-        p2pProgress: true,
-        subtitles: true,
+        download: true,
         fullscreen: true,
-        chromecast: true,
-        embed: false
+        settings: false,
+        chromecast: true
       },
       on: function (e: any) {
         if (e.name == window.webtor.INITED) {

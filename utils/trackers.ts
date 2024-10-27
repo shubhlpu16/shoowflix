@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const trackers = [
+const trackers = [
   'udp://open.demonii.com:1337/announce',
   'udp://tracker.openbittorrent.com:80',
   'udp://tracker.coppersurfer.tk:6969',
@@ -148,10 +148,34 @@ export const trackers = [
   // 'udp://mgtracker.org:2710/announce'
 ]
 
-export const getTrackers = async () => {
+const getTrackers = async () => {
   const { data } = await axios.get('/api/trackers')
   return [
     ...data.map(({ tracker }: { tracker: string }) => tracker),
     ...trackers
   ]
 }
+
+class Trackers {
+  private static instance: Trackers
+  public trackers: string[] = []
+  constructor() {
+    if (!Trackers.instance) {
+      Trackers.instance = this
+    }
+    return Trackers.instance
+  }
+
+  async loadTrackers() {
+    if (!this.trackers.length) {
+      this.trackers = await getTrackers()
+    }
+  }
+
+  getTrackers() {
+    return this.trackers
+  }
+}
+
+const instance = new Trackers()
+export default instance

@@ -31,17 +31,16 @@ import { useResponsive } from '@/hooks/useResponsive'
 // import { MovieCard } from '@/components/movie-card'
 import { play } from '@/utils/play'
 import axios from 'axios'
-import useSWR, { SWRConfig } from 'swr'
+import useSWR from 'swr'
 import { fetcher } from '@/data/use-swr'
 import { MdFavorite, MdFavoriteBorder } from 'react-icons/md'
 import { signIn, useSession } from 'next-auth/react'
 import Carousel from '@/components/carousel'
 import { CommentsTree } from '@/components/comments-tree'
 import Head from 'next/head'
-import camelcaseKeys from 'camelcase-keys'
 import { generateMetaData } from '@/utils/generate-metadata'
 
-export default function Movie({ fallback }: any) {
+export default function Movie() {
   const router = useRouter()
   const { isMobile } = useResponsive()
   const {

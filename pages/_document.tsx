@@ -6,6 +6,7 @@ export default function Document() {
       <Head>
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#000" />
+        <meta name="referrer" content="no-referrer-when-downgrade" />
         <meta name="description" content="An online movie streaming app" />
         <link
           rel="icon"

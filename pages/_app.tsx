@@ -10,6 +10,7 @@ import { SessionProvider, useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import Head from 'next/head'
 import Trackers from '@/utils/trackers'
+import Script from 'next/script'
 // import useSSE from '@/hooks/use-sse'
 // import { useSession } from 'next-auth/client'
 
@@ -126,6 +127,18 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         <link rel="manifest" href="/manifest.json" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=AW-17423608951"
+        strategy="afterInteractive"
+      />
+      <Script id="gtag-init" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'AW-17423608951');
+        `}
+      </Script>
       <SessionProvider session={session}>
         <UserSession></UserSession>
         <ChakraProvider theme={theme}>

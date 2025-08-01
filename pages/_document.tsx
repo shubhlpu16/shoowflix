@@ -4,6 +4,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
+        <meta name="12d6fe71d51723525951e783ff2031fa370d766f" content="12d6fe71d51723525951e783ff2031fa370d766f" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#000" />
         <meta name="referrer" content="no-referrer-when-downgrade" />
